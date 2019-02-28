@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
+using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
@@ -41,7 +42,8 @@ namespace ECommerce.Backend.Controllers
         // GET: Districts/Create
         public ActionResult Create()
         {
-            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d=>d.Name),
+            ViewBag.DepartmentId = new SelectList(
+                CombosHelper.GetDepartments(),
                 "DepartmentId", 
                 "Name");
             return View();
@@ -61,7 +63,8 @@ namespace ECommerce.Backend.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d=>d.Name),
+            ViewBag.DepartmentId = new SelectList(
+                CombosHelper.GetDepartments(),
                 "DepartmentId",
                 "Name",
                 district.DepartmentId);
@@ -80,7 +83,8 @@ namespace ECommerce.Backend.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d=>d.Name),
+            ViewBag.DepartmentId = new SelectList(
+                CombosHelper.GetDepartments(),
                 "DepartmentId", 
                 "Name",
                 district.DepartmentId);
@@ -100,7 +104,8 @@ namespace ECommerce.Backend.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments.OrderBy(d=>d.Name), 
+            ViewBag.DepartmentId = new SelectList(
+                CombosHelper.GetDepartments(),
                 "DepartmentId",
                 "Name", 
                 district.DepartmentId);
@@ -131,6 +136,7 @@ namespace ECommerce.Backend.Controllers
             db.Districts.Remove(district);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+
         }
 
         protected override void Dispose(bool disposing)
