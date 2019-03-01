@@ -15,5 +15,7 @@
         public System.Data.Entity.DbSet<Common.Models.Department> Departments { get; set; }
 
         public System.Data.Entity.DbSet<ECommerce.Common.Models.District> Districts { get; set; }
+
+        public System.Data.Entity.DbSet<ECommerce.Common.Models.Company> Companies { get; set; }
     }
 }

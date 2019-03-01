@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
