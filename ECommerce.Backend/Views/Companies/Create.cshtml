@@ -79,4 +79,30 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#DepartmentId").change(function () {
+                $("#DistrictId").empty();
+                $("#DistrictId").append('<option value="0">[Seclect a district...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetDistricts")',
+                    dataType: 'json',
+                    data: { departmentId: $("#DepartmentId").val() },
+                    success: function (data) {
+                        $.each(data, function (i, data) {
+                            $("#DistrictId").append('<option value="'
+                             + data.DistrictId + '">'
+                             + data.Name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve districts.' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+
 }

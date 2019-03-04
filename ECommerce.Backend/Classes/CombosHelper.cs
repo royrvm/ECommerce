@@ -21,6 +21,17 @@ namespace ECommerce.Backend.Classes
             return departments.OrderBy(d => d.Name).ToList();
         }
 
+        public static List<District> GetDistricts()
+        {
+            var districts = db.Districts.ToList();
+            districts.Add(new District
+            {
+                DistrictId = 0,
+                Name = "[Select a district...]"
+            });
+            return districts.OrderBy(d => d.Name).ToList();
+        }
+
         public void Dispose()
         {
             db.Dispose();

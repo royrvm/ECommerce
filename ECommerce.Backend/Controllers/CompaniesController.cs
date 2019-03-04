@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
 using ECommerce.Backend.Helpers;
+using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
@@ -42,8 +43,8 @@ namespace ECommerce.Backend.Controllers
         // GET: Companies/Create
         public ActionResult Create()
         {
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name");
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
             return View();
         }
 
@@ -72,8 +73,8 @@ namespace ECommerce.Backend.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", view.DepartmentId);
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", view.DistrictId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", view.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", view.DistrictId);
             return View(view);
         }
 
@@ -102,8 +103,8 @@ namespace ECommerce.Backend.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", company.DepartmentId);
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", company.DistrictId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", company.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", company.DistrictId);
             return View(company);
         }
 
@@ -120,8 +121,8 @@ namespace ECommerce.Backend.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", company.DepartmentId);
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", company.DistrictId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", company.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", company.DistrictId);
             return View(company);
         }
 
@@ -150,6 +151,14 @@ namespace ECommerce.Backend.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        public JsonResult GetDistricts(int departmentId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var districts = db.Districts.Where(d => d.DepartmentId == departmentId);
+            return Json(districts);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
