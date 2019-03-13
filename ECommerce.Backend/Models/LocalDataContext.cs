@@ -17,5 +17,7 @@
         public System.Data.Entity.DbSet<ECommerce.Common.Models.District> Districts { get; set; }
 
         public System.Data.Entity.DbSet<ECommerce.Common.Models.Company> Companies { get; set; }
+
+        public System.Data.Entity.DbSet<ECommerce.Common.Models.User> Users { get; set; }
     }
 }

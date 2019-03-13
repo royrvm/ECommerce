@@ -17,5 +17,7 @@
         public virtual ICollection<District> Districts { get; set; }
 
         public virtual ICollection<Company> Companies { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
     }
 }
