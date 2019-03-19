@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
+using ECommerce.Backend.Classes;
+using ECommerce.Backend.Helpers;
 
 namespace ECommerce.Backend.Controllers
 {
@@ -41,9 +43,9 @@ namespace ECommerce.Backend.Controllers
         // GET: Users/Create
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name");
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name");
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name");
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
             return View();
         }
 
@@ -52,19 +54,46 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "UserId,UserName,FirstName,LastName,Phone,Address,Photo,DepartmentId,DistrictId,CompanyId")] User user)
+        public async Task<ActionResult> Create(UserView view)
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
+                var pic = string.Empty;
+                var folder = "~/Content/Companies";
+
+                if (view.PhotoFile != null)
+                {
+                    pic = FilesHelper.UploadPhoto(view.PhotoFile, folder);
+                    pic = string.Format("{0}/{1}", folder, pic);
+                }
+
+                var user = this.ToUser(view, pic);
+
+                this.db.Users.Add(user);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", user.CompanyId);
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", user.DepartmentId);
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", user.DistrictId);
-            return View(user);
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", view.CompanyId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", view.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", view.DistrictId);
+            return View(view);
+        }
+
+        private User ToUser(UserView view, string pic)
+        {
+            return new User
+            {
+                UserName=view.UserName,
+                FirstName = view.FirstName,
+                LastName = view.LastName,
+                Phone = view.Phone,
+                Address = view.Address,
+                Photo = pic,
+                DepartmentId = view.DepartmentId,
+                DistrictId = view.DistrictId,
+                CompanyId = view.CompanyId,
+            };
         }
 
         // GET: Users/Edit/5
@@ -79,9 +108,9 @@ namespace ECommerce.Backend.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", user.CompanyId);
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", user.DepartmentId);
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", user.DistrictId);
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", user.CompanyId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", user.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", user.DistrictId);
             return View(user);
         }
 
@@ -90,7 +119,7 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "UserId,UserName,FirstName,LastName,Phone,Address,Photo,DepartmentId,DistrictId,CompanyId")] User user)
+        public async Task<ActionResult> Edit( User user)
         {
             if (ModelState.IsValid)
             {
@@ -98,9 +127,9 @@ namespace ECommerce.Backend.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", user.CompanyId);
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", user.DepartmentId);
-            ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", user.DistrictId);
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", user.CompanyId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", user.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", user.DistrictId);
             return View(user);
         }
 
@@ -128,6 +157,13 @@ namespace ECommerce.Backend.Controllers
             db.Users.Remove(user);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
+        }
+
+        public JsonResult GetDistricts(int departmentId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            var districts = db.Districts.Where(d => d.DepartmentId == departmentId);
+            return Json(districts);
         }
 
         protected override void Dispose(bool disposing)

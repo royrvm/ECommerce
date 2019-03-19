@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ECommerce.Common.Models.User>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Users";
 }
 
-<h2>Index</h2>
+    <h2>Users</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -68,7 +68,10 @@
             @Html.DisplayFor(modelItem => item.Address)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Photo)
+            @if (!string.IsNullOrEmpty(item.Photo))
+            {
+                <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+            }
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |

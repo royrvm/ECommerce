@@ -31,6 +31,17 @@ namespace ECommerce.Backend.Classes
             });
             return districts.OrderBy(d => d.Name).ToList();
         }
+        
+        public static List<Company> GetCompanies()
+        {
+            var companies = db.Companies.ToList();
+            companies.Add(new Company
+            {
+                CompanyId = 0,
+                Name = "[Select a company...]"
+            });
+            return companies.OrderBy(d => d.Name).ToList();
+        }
 
         public void Dispose()
         {
