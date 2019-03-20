@@ -11,7 +11,15 @@ namespace ECommerce.Domain.Models
     {
         public DataContext() : base("DefaultConnection")
         {
-
+            
         }
+
+        public DbSet<Common.Models.Department> Departments { get; set; }
+
+        public DbSet<Common.Models.District> Districts { get; set; }
+
+        public DbSet<Common.Models.Company> Companies { get; set; }
+
+        public DbSet<Common.Models.User> Users { get; set; }
     }
 }

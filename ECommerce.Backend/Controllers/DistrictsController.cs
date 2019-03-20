@@ -20,7 +20,7 @@ namespace ECommerce.Backend.Controllers
         // GET: Districts
         public async Task<ActionResult> Index()
         {
-            var districts = db.Districts.Include(d => d.Department);
+            var districts = this.db.Districts.Include(d => d.Department);
             return View(await districts.ToListAsync());
         }
 
@@ -31,7 +31,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            District district = await db.Districts.FindAsync(id);
+            District district = await this.db.Districts.FindAsync(id);
             if (district == null)
             {
                 return HttpNotFound();
@@ -58,8 +58,8 @@ namespace ECommerce.Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Districts.Add(district);
-                await db.SaveChangesAsync();
+                this.db.Districts.Add(district);
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -78,7 +78,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            District district = await db.Districts.FindAsync(id);
+            District district = await this.db.Districts.FindAsync(id);
             if (district == null)
             {
                 return HttpNotFound();
@@ -100,8 +100,8 @@ namespace ECommerce.Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(district).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                this.db.Entry(district).State = EntityState.Modified;
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             ViewBag.DepartmentId = new SelectList(
@@ -119,7 +119,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            District district = await db.Districts.FindAsync(id);
+            District district = await this.db.Districts.FindAsync(id);
             if (district == null)
             {
                 return HttpNotFound();
@@ -132,9 +132,9 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            District district = await db.Districts.FindAsync(id);
-            db.Districts.Remove(district);
-            await db.SaveChangesAsync();
+            District district = await this.db.Districts.FindAsync(id);
+            this.db.Districts.Remove(district);
+            await this.db.SaveChangesAsync();
             return RedirectToAction("Index");
 
         }
@@ -143,7 +143,7 @@ namespace ECommerce.Backend.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }

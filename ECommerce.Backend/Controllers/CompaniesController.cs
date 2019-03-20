@@ -21,7 +21,7 @@ namespace ECommerce.Backend.Controllers
         // GET: Companies
         public async Task<ActionResult> Index()
         {
-            var companies = db.Companies.Include(c => c.Department).Include(c => c.District);
+            var companies = this.db.Companies.Include(c => c.Department).Include(c => c.District);
             return View(await companies.ToListAsync());
         }
 
@@ -32,7 +32,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = await db.Companies.FindAsync(id);
+            Company company = await this.db.Companies.FindAsync(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -68,8 +68,8 @@ namespace ECommerce.Backend.Controllers
 
                 var company = this.ToCompany(view,pic);
 
-                db.Companies.Add(company);
-                await db.SaveChangesAsync();
+                this.db.Companies.Add(company);
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -98,7 +98,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var company = await db.Companies.FindAsync(id);
+            var company = await this.db.Companies.FindAsync(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -117,8 +117,8 @@ namespace ECommerce.Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(company).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                this.db.Entry(company).State = EntityState.Modified;
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", company.DepartmentId);
@@ -133,7 +133,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Company company = await db.Companies.FindAsync(id);
+            Company company = await this.db.Companies.FindAsync(id);
             if (company == null)
             {
                 return HttpNotFound();
@@ -146,16 +146,16 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Company company = await db.Companies.FindAsync(id);
-            db.Companies.Remove(company);
-            await db.SaveChangesAsync();
+            Company company = await this.db.Companies.FindAsync(id);
+            this.db.Companies.Remove(company);
+            await this.db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         public JsonResult GetDistricts(int departmentId)
         {
-            db.Configuration.ProxyCreationEnabled = false;
-            var districts = db.Districts.Where(d => d.DepartmentId == departmentId);
+            this.db.Configuration.ProxyCreationEnabled = false;
+            var districts = this.db.Districts.Where(d => d.DepartmentId == departmentId);
             return Json(districts);
         }
 
@@ -164,7 +164,7 @@ namespace ECommerce.Backend.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }

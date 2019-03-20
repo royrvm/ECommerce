@@ -21,7 +21,7 @@ namespace ECommerce.Backend.Controllers
         // GET: Users
         public async Task<ActionResult> Index()
         {
-            var users = db.Users.Include(u => u.Company).Include(u => u.Department).Include(u => u.District);
+            var users = this.db.Users.Include(u => u.Company).Include(u => u.Department).Include(u => u.District);
             return View(await users.ToListAsync());
         }
 
@@ -32,7 +32,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = await db.Users.FindAsync(id);
+            User user = await this.db.Users.FindAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -70,7 +70,7 @@ namespace ECommerce.Backend.Controllers
                 var user = this.ToUser(view, pic);
 
                 this.db.Users.Add(user);
-                await db.SaveChangesAsync();
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -103,7 +103,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = await db.Users.FindAsync(id);
+            var user = await this.db.Users.FindAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -123,8 +123,8 @@ namespace ECommerce.Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                this.db.Entry(user).State = EntityState.Modified;
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", user.CompanyId);
@@ -140,7 +140,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = await db.Users.FindAsync(id);
+            var user = await this.db.Users.FindAsync(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -153,16 +153,16 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
+            User user = await this.db.Users.FindAsync(id);
+            this.db.Users.Remove(user);
+            await this.db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         public JsonResult GetDistricts(int departmentId)
         {
-            db.Configuration.ProxyCreationEnabled = false;
-            var districts = db.Districts.Where(d => d.DepartmentId == departmentId);
+            this.db.Configuration.ProxyCreationEnabled = false;
+            var districts = this.db.Districts.Where(d => d.DepartmentId == departmentId);
             return Json(districts);
         }
 
@@ -170,7 +170,7 @@ namespace ECommerce.Backend.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }

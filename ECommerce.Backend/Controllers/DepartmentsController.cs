@@ -19,7 +19,7 @@ namespace ECommerce.Backend.Controllers
         // GET: Departments
         public async Task<ActionResult> Index()
         {
-            return View(await db.Departments.ToListAsync());
+            return View(await this.db.Departments.ToListAsync());
         }
 
         // GET: Departments/Details/5
@@ -29,7 +29,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = await db.Departments.FindAsync(id);
+            Department department = await this.db.Departments.FindAsync(id);
             if (department == null)
             {
                 return HttpNotFound();
@@ -52,10 +52,10 @@ namespace ECommerce.Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Add(department);
+                this.db.Departments.Add(department);
                 try
                 {
-                    await db.SaveChangesAsync();
+                    await this.db.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -83,7 +83,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = await db.Departments.FindAsync(id);
+            Department department = await this.db.Departments.FindAsync(id);
             if (department == null)
             {
                 return HttpNotFound();
@@ -100,10 +100,10 @@ namespace ECommerce.Backend.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(department).State = EntityState.Modified;
+                this.db.Entry(department).State = EntityState.Modified;
                 try
                 {
-                    await db.SaveChangesAsync();
+                    await this.db.SaveChangesAsync();
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)
@@ -130,7 +130,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Department department = await db.Departments.FindAsync(id);
+            Department department = await this.db.Departments.FindAsync(id);
             if (department == null)
             {
                 return HttpNotFound();
@@ -143,11 +143,11 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Department department = await db.Departments.FindAsync(id);
-            db.Departments.Remove(department);
+            Department department = await this.db.Departments.FindAsync(id);
+            this.db.Departments.Remove(department);
             try
             {
-                await db.SaveChangesAsync();
+                await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -170,7 +170,7 @@ namespace ECommerce.Backend.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                this.db.Dispose();
             }
             base.Dispose(disposing);
         }
