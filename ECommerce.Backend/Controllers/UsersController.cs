@@ -59,7 +59,7 @@ namespace ECommerce.Backend.Controllers
             if (ModelState.IsValid)
             {
                 var pic = string.Empty;
-                var folder = "~/Content/Companies";
+                var folder = "~/Content/Users";
 
                 if (view.PhotoFile != null)
                 {
@@ -96,6 +96,23 @@ namespace ECommerce.Backend.Controllers
             };
         }
 
+        private User ToUserEdit(UserView view, string pic)
+        {
+            return new User
+            {
+                UserId=view.UserId,
+                UserName = view.UserName,
+                FirstName = view.FirstName,
+                LastName = view.LastName,
+                Phone = view.Phone,
+                Address = view.Address,
+                Photo = pic,
+                DepartmentId = view.DepartmentId,
+                DistrictId = view.DistrictId,
+                CompanyId = view.CompanyId,
+            };
+        }
+
         // GET: Users/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -111,7 +128,27 @@ namespace ECommerce.Backend.Controllers
             ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", user.CompanyId);
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", user.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", user.DistrictId);
-            return View(user);
+
+            var view = this.ToView(user);
+
+            return View(view);
+        }
+
+        private UserView ToView(User user)
+        {
+            return new UserView
+            {
+                UserId=user.UserId,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Address = user.Address,
+                Photo = user.Photo,
+                DepartmentId = user.DepartmentId,
+                DistrictId = user.DistrictId,
+                CompanyId = user.CompanyId,
+            };
         }
 
         // POST: Users/Edit/5
@@ -119,18 +156,29 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit( User user)
+        public async Task<ActionResult> Edit( UserView view)
         {
             if (ModelState.IsValid)
             {
+                var pic = view.Photo;
+                var folder = "~/Content/Users";
+
+                if (view.PhotoFile != null)
+                {
+                    pic = FilesHelper.UploadPhoto(view.PhotoFile, folder);
+                    pic = string.Format("{0}/{1}", folder, pic);
+                }
+
+                var user = this.ToUserEdit(view, pic);
+
                 this.db.Entry(user).State = EntityState.Modified;
                 await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", user.CompanyId);
-            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", user.DepartmentId);
-            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", user.DistrictId);
-            return View(user);
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", view.CompanyId);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", view.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", view.DistrictId);
+            return View(view);
         }
 
         // GET: Users/Delete/5
