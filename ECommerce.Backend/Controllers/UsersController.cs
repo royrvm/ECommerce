@@ -71,6 +71,7 @@ namespace ECommerce.Backend.Controllers
 
                 this.db.Users.Add(user);
                 await this.db.SaveChangesAsync();
+                UsersHelper.CreateUserASP(user.UserName, "User");
                 return RedirectToAction("Index");
             }
 
