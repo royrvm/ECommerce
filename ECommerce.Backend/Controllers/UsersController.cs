@@ -14,6 +14,7 @@ using ECommerce.Backend.Helpers;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -170,8 +171,15 @@ namespace ECommerce.Backend.Controllers
                     pic = string.Format("{0}/{1}", folder, pic);
                 }
 
-                var user = this.ToUserEdit(view, pic);
+                var db2 = new LocalDataContext();
+                var currentUser = db2.Users.Find(view.UserId);
+                if(currentUser.UserName!=view.UserName)
+                {
+                    UsersHelper.UpdateUserName(currentUser.UserName, view.UserName);
+                }
+                db2.Dispose();
 
+                var user = this.ToUserEdit(view, pic);
                 this.db.Entry(user).State = EntityState.Modified;
                 await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -202,9 +210,10 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            User user = await this.db.Users.FindAsync(id);
+            var user = await this.db.Users.FindAsync(id);
             this.db.Users.Remove(user);
             await this.db.SaveChangesAsync();
+            UsersHelper.DeleteUser(user.UserName);
             return RedirectToAction("Index");
         }
 

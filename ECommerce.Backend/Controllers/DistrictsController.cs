@@ -13,6 +13,7 @@ using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class DistrictsController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
