@@ -14,7 +14,7 @@ using ECommerce.Backend.Helpers;
 
 namespace ECommerce.Backend.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "User, Admin")]
     public class UsersController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -22,7 +22,12 @@ namespace ECommerce.Backend.Controllers
         // GET: Users
         public async Task<ActionResult> Index()
         {
-            var users = this.db.Users.Include(u => u.Company).Include(u => u.Department).Include(u => u.District);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            if(user==null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var users = this.db.Users.Where(c=>c.CompanyId==user.CompanyId).Include(u => u.Department).Include(u => u.District);
             return View(await users.ToListAsync());
         }
 
@@ -44,10 +49,17 @@ namespace ECommerce.Backend.Controllers
         // GET: Users/Create
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name");
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userlog = new UserView { CompanyId = user.CompanyId };
+
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
-            return View();
+            return View(userlog);
         }
 
         // POST: Users/Create
@@ -72,7 +84,7 @@ namespace ECommerce.Backend.Controllers
 
                 this.db.Users.Add(user);
                 await this.db.SaveChangesAsync();
-                UsersHelper.CreateUserASP(user.UserName, "User");
+                UsersHelper.CreateUserASP(user.UserName, "Salesman");
                 return RedirectToAction("Index");
             }
 
@@ -127,7 +139,7 @@ namespace ECommerce.Backend.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", user.CompanyId);
+            
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", user.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", user.DistrictId);
 

@@ -10,5 +10,7 @@
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
+
+        public System.Data.Entity.DbSet<ECommerce.Common.Models.Warehouse> Warehouses { get; set; }
     }
 }

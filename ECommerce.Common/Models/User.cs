@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.Common.Models
 {
@@ -59,5 +60,7 @@ namespace ECommerce.Common.Models
         public virtual District District { get; set; }
 
         public virtual Company Company { get; set; }
+
+        public virtual ICollection<Warehouse> Warehouses { get; set; }
     }
 }

@@ -43,6 +43,17 @@ namespace ECommerce.Backend.Classes
             return companies.OrderBy(d => d.Name).ToList();
         }
 
+        public static List<User> GetUsers()
+        {
+            var user = db.Users.ToList();
+            user.Add(new User
+            {
+                UserId = 0,
+                UserName = "[Select a User...]"
+            });
+            return user.OrderBy(d => d.FirstName).ToList();
+        }
+
         public void Dispose()
         {
             db.Dispose();
