@@ -1,0 +1,82 @@
+﻿@model ECommerce.Common.Models.Inventory
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Inventory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Warehouse.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Warehouse.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Collection)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Collection)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pettycash)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pettycash)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Administrativeexpense)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Administrativeexpense)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subtotal)
+        </dt>
+
+        <dd>
+            <strong>@Html.DisplayFor(model => model.Subtotal)</strong>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Renewedcredit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Renewedcredit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            <strong>@Html.DisplayFor(model => model.Total)</strong>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.InventoryId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

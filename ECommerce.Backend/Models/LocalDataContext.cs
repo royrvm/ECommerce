@@ -14,5 +14,9 @@
         public System.Data.Entity.DbSet<ECommerce.Common.Models.Warehouse> Warehouses { get; set; }
 
         public System.Data.Entity.DbSet<ECommerce.Common.Models.Customer> Customers { get; set; }
+
+        public System.Data.Entity.DbSet<ECommerce.Common.Models.Inventory> Inventories { get; set; }
+
+        public System.Data.Entity.DbSet<ECommerce.Common.Models.State> States { get; set; }
     }
 }

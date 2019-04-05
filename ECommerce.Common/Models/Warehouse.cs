@@ -58,5 +58,7 @@ namespace ECommerce.Common.Models
 
         public virtual User User { get; set; }
 
+        public virtual ICollection<Inventory> Inventories{ get; set; }
+
     }
 }
