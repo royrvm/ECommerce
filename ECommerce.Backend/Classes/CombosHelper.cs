@@ -1,6 +1,7 @@
 ﻿using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -52,6 +53,17 @@ namespace ECommerce.Backend.Classes
                 UserName = "[Select a User...]"
             });
             return user.OrderBy(d => d.FirstName).ToList();
+        }
+
+        public static List<Customer> GetCustomers(int companyId)
+        {
+            var customers = db.Customers.Where(c => c.CompanyId == companyId).ToList();
+            customers.Add(new Customer
+            {
+                CustomerId=0,
+                FirstName="[Select a customer...]",
+            });
+            return customers.OrderBy(c => c.FirstName).ThenBy(c=>c.LastName).ToList();
         }
 
         public void Dispose()

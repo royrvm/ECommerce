@@ -21,5 +21,17 @@ namespace ECommerce.Domain.Models
         public DbSet<Common.Models.Company> Companies { get; set; }
 
         public DbSet<Common.Models.User> Users { get; set; }
+
+        public DbSet<Common.Models.Warehouse> Warehouses { get; set; }
+
+        public DbSet<Common.Models.Customer> Customers { get; set; }
+
+        public DbSet<Common.Models.Inventory> Inventories { get; set; }
+
+        public DbSet<Common.Models.State> States { get; set; }
+
+        public DbSet<Common.Models.Order> Orders { get; set; }
+
+        //public DbSet<Common.Models.OrderDetail> OrderDetails { get; set; }
     }
 }
