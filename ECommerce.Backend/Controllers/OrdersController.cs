@@ -44,21 +44,24 @@ namespace ECommerce.Backend.Controllers
         public ActionResult Create()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var warehouse = db.Warehouses.Where(w => w.UserId == user.UserId).FirstOrDefault();
             ViewBag.CustomerId = new SelectList(CombosHelper.GetCustomers(user.CompanyId), "CustomerId", "FullName");
             ViewBag.WarehouseId = new SelectList(db.Warehouses.Where(w=>w.User.UserId==user.UserId), "WarehouseId", "Name");
 
-            var wareHouse = db.Warehouses.Where(w => w.User.UserId == user.UserId);
+            //var wareHouse = db.Warehouses.Where(w => w.User.UserId == user.UserId);
 
             var view = new Order()
             {                
                 UserName=User.Identity.Name,
-                //WarehouseId=wareHouse.
+                StateId = DBHelper.GetState("Created",db),
                 StartDate =DateTime.Now,
                 Period=30,               
                 EndDate=DateTime.Now.AddDays(30),
+                CompanyId=user.CompanyId,
+                WarehouseId=warehouse.WarehouseId,
             };
 
-            return View(view);
+            return PartialView(view);
         }
 
         // POST: Orders/Create
@@ -68,6 +71,11 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Order order)
         {
+            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+             .Select(x => new { x.Key, x.Value.Errors })
+             .ToArray();
+
+
             if (ModelState.IsValid)
             {
                 db.Orders.Add(order);
@@ -77,7 +85,7 @@ namespace ECommerce.Backend.Controllers
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             ViewBag.CustomerId = new SelectList(CombosHelper.GetCustomers(user.CompanyId), "CustomerId", "UserName", order.CustomerId);
             ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", order.WarehouseId);
-            return View(order);
+            return PartialView(order);
         }
 
         // GET: Orders/Edit/5

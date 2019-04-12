@@ -33,7 +33,6 @@ namespace ECommerce.Common.Models
         public int StateId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
@@ -88,7 +87,7 @@ namespace ECommerce.Common.Models
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
-        [Display(Name = "Operating Expenses")]
+        [Display(Name = "O. Expenses")]
         public double OperatingExpenses { get; set; }
 
         public virtual Customer Customer { get; set; }
