@@ -16,6 +16,11 @@ namespace ECommerce.Common.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
+        [MaxLength(8, ErrorMessage = "The field {0} must be maximun {1} characters lenght")]
+        [Display(Name = "DNI")]
+        public string DNI { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(50, ErrorMessage = "The field {0} must be maximun {1} characters lenght")]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -52,14 +57,24 @@ namespace ECommerce.Common.Models
         [Display(Name = "Company")]
         public int CompanyId { get; set; }
 
+        [Required(ErrorMessage = "The field {0} is required")]
+        [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
+        [Display(Name = "Company")]
+        public int MainWarehouseId { get; set; }
+
         [Display(Name = "User")]
         public string FullName { get {return string.Format("{0}{1}",FirstName,LastName); } }
+
+        [Display(Name = "UserRoles")]
+        public string AspRoles { get; set; } 
 
         public virtual Department Department { get; set; }
 
         public virtual District District { get; set; }
 
         public virtual Company Company { get; set; }
+
+        public virtual MainWarehouse MainWarehouse { get; set; }
 
         public virtual ICollection<Warehouse> Warehouses { get; set; }
     }

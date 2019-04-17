@@ -48,8 +48,10 @@
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\DisbursedLoan.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\MainWarehouse.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\State.cs" />

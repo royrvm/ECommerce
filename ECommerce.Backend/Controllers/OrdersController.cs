@@ -21,7 +21,9 @@ namespace ECommerce.Backend.Controllers
         public async Task<ActionResult> Index()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            var orders = db.Orders.Where(o => o.CompanyId == user.CompanyId).Include(o => o.Customer).Include(o => o.State).Include(o => o.Warehouse);
+            var warehouse = db.Warehouses.Where(w => w.UserId == user.UserId).FirstOrDefault();
+            var orders = db.Orders.Where(o => o.WarehouseId == warehouse.WarehouseId).Include(o => o.Customer).Include(o => o.State).Include(o => o.Warehouse);
+
             return View(await orders.ToListAsync());
         }
 

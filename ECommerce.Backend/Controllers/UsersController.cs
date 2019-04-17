@@ -14,7 +14,7 @@ using ECommerce.Backend.Helpers;
 
 namespace ECommerce.Backend.Controllers
 {
-    [Authorize(Roles = "User, Admin")]
+    [Authorize(Roles = "User")]
     public class UsersController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -59,6 +59,8 @@ namespace ECommerce.Backend.Controllers
 
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name");
+            ViewBag.userRoles = SelectUserRolers();
             return View(userlog);
         }
 
@@ -69,6 +71,11 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(UserView view)
         {
+            //Sirve para poder ver errores en el ingreso de datos
+            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+             .Select(x => new { x.Key, x.Value.Errors })
+             .ToArray();
+
             if (ModelState.IsValid)
             {
                 var pic = string.Empty;
@@ -84,21 +91,23 @@ namespace ECommerce.Backend.Controllers
 
                 this.db.Users.Add(user);
                 await this.db.SaveChangesAsync();
-                UsersHelper.CreateUserASP(user.UserName, "Salesman");
+                UsersHelper.CreateUserASP(user.UserName, user.AspRoles);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", view.CompanyId);
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", view.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", view.DistrictId);
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name");
+            ViewBag.userRoles = SelectUserRolers();
             return View(view);
         }
 
         private User ToUser(UserView view, string pic)
-        {
+        {            
             return new User
             {
                 UserName=view.UserName,
+                DNI = view.DNI,
                 FirstName = view.FirstName,
                 LastName = view.LastName,
                 Phone = view.Phone,
@@ -107,6 +116,8 @@ namespace ECommerce.Backend.Controllers
                 DepartmentId = view.DepartmentId,
                 DistrictId = view.DistrictId,
                 CompanyId = view.CompanyId,
+                MainWarehouseId = view.MainWarehouseId,
+                AspRoles=view.AspRoles,
             };
         }
 
@@ -116,6 +127,7 @@ namespace ECommerce.Backend.Controllers
             {
                 UserId=view.UserId,
                 UserName = view.UserName,
+                DNI = view.DNI,
                 FirstName = view.FirstName,
                 LastName = view.LastName,
                 Phone = view.Phone,
@@ -124,6 +136,8 @@ namespace ECommerce.Backend.Controllers
                 DepartmentId = view.DepartmentId,
                 DistrictId = view.DistrictId,
                 CompanyId = view.CompanyId,
+                MainWarehouseId = view.MainWarehouseId,
+                AspRoles = view.AspRoles,
             };
         }
 
@@ -142,6 +156,8 @@ namespace ECommerce.Backend.Controllers
             
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", user.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", user.DistrictId);
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", user.MainWarehouseId);
+            ViewBag.userRoles = SelectUserRolers();
 
             var view = this.ToView(user);
 
@@ -154,6 +170,7 @@ namespace ECommerce.Backend.Controllers
             {
                 UserId=user.UserId,
                 UserName = user.UserName,
+                DNI=user.DNI,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Phone = user.Phone,
@@ -162,7 +179,30 @@ namespace ECommerce.Backend.Controllers
                 DepartmentId = user.DepartmentId,
                 DistrictId = user.DistrictId,
                 CompanyId = user.CompanyId,
+                MainWarehouseId = user.MainWarehouseId,
+                AspRoles = user.AspRoles,
             };
+        }
+
+        public List<SelectListItem> SelectUserRolers ()
+        {
+            return new List<SelectListItem>() {
+                new SelectListItem()
+                {
+                    Text="Admin",
+                    Value="User",
+                },
+                new SelectListItem()
+                {
+                    Text="Supervisor",
+                    Value="Supervisor",
+                },
+                new SelectListItem()
+                {
+                    Text="Salesman",
+                    Value="Salesman",
+                },
+            };            
         }
 
         // POST: Users/Edit/5
@@ -172,6 +212,7 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit( UserView view)
         {
+
             if (ModelState.IsValid)
             {
                 var pic = view.Photo;
@@ -196,9 +237,11 @@ namespace ECommerce.Backend.Controllers
                 await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", view.CompanyId);
+
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", view.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", view.DistrictId);
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", view.MainWarehouseId);
+            ViewBag.userRoles = SelectUserRolers();
             return View(view);
         }
 

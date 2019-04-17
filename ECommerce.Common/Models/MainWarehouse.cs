@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Common.Models
 {
-    public class Warehouse
+    public class MainWarehouse
     {
         [Key]
-        public int WarehouseId { get; set; }
+        public int MainWarehouseId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
@@ -19,17 +19,11 @@ namespace ECommerce.Common.Models
         public int CompanyId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
-        [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
-        [Display(Name = "Main Ware HouseId")]
-        //[Index("Warehouse_CompanyId_Index"),1,IsUnique=true]
-        public int MainWarehouseId { get; set; }
-
-        [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(50, ErrorMessage = "The field {0} must be maximun {1} characters lenght")]
-        [Display(Name = "Warehouse")]
+        [Display(Name = "MainWarehouse")]
         //[Index("Warehouse_CompanyId_Index"),2,IsUnique=true]
         public string Name { get; set; }
-                
+
 
         [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(20, ErrorMessage = "The field {0} must be maximun {1} characters lenght")]
@@ -39,7 +33,7 @@ namespace ECommerce.Common.Models
         [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(100, ErrorMessage = "The field {0} must be maximun {1} characters lenght")]
         public string Address { get; set; }
-        
+
 
         [Required(ErrorMessage = "The field {0} is required")]
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
@@ -51,24 +45,16 @@ namespace ECommerce.Common.Models
         [Display(Name = "District")]
         public int DistrictId { get; set; }
 
-        [Required(ErrorMessage = "The field {0} is required")]
-        [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
-        [Display(Name = "User")]
-        public int UserId { get; set; }
-
         public virtual Department Department { get; set; }
 
         public virtual District District { get; set; }
 
         public virtual Company Company { get; set; }
+        
+        public virtual ICollection<Inventory> Inventories { get; set; }        
 
-        public virtual User User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
 
-        public virtual MainWarehouse MainWarehouse { get; set; }
-
-        public virtual ICollection<Inventory> Inventories{ get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
-
+        public virtual ICollection<Warehouse> Warehouses { get; set; }
     }
 }
