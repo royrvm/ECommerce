@@ -1,0 +1,162 @@
+﻿@model ECommerce.Common.Models.DisbursedLoan
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DisbursedLoan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Company.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanState.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanState.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeLoan.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeLoan.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Warehouse.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Warehouse.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Period)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Period)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BorrowedCapital)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BorrowedCapital)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Interest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Interest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Total)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Total)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DailyPayment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DailyPayment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OperatingExpenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OperatingExpenses)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DisbursedLoanId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -175,13 +175,16 @@
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
+    <Compile Include="Controllers\DisbursedLoansController.cs" />
     <Compile Include="Controllers\DistrictsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoriesController.cs" />
+    <Compile Include="Controllers\LoanStatesController.cs" />
     <Compile Include="Controllers\MainWarehousesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
+    <Compile Include="Controllers\TypeLoansController.cs" />
     <Compile Include="Controllers\Users1Controller.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\WarehousesController.cs" />
@@ -318,6 +321,21 @@
     <Content Include="Views\Users1\Details.cshtml" />
     <Content Include="Views\Users1\Edit.cshtml" />
     <Content Include="Views\Users1\Index.cshtml" />
+    <Content Include="Views\TypeLoans\Create.cshtml" />
+    <Content Include="Views\TypeLoans\Delete.cshtml" />
+    <Content Include="Views\TypeLoans\Details.cshtml" />
+    <Content Include="Views\TypeLoans\Edit.cshtml" />
+    <Content Include="Views\TypeLoans\Index.cshtml" />
+    <Content Include="Views\LoanStates\Create.cshtml" />
+    <Content Include="Views\LoanStates\Delete.cshtml" />
+    <Content Include="Views\LoanStates\Details.cshtml" />
+    <Content Include="Views\LoanStates\Edit.cshtml" />
+    <Content Include="Views\LoanStates\Index.cshtml" />
+    <Content Include="Views\DisbursedLoans\Create.cshtml" />
+    <Content Include="Views\DisbursedLoans\Delete.cshtml" />
+    <Content Include="Views\DisbursedLoans\Details.cshtml" />
+    <Content Include="Views\DisbursedLoans\Edit.cshtml" />
+    <Content Include="Views\DisbursedLoans\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

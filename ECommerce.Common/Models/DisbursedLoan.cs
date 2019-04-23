@@ -34,6 +34,16 @@ namespace ECommerce.Common.Models
 
         [Required(ErrorMessage = "The field {0} is required")]
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
+        [Display(Name = "TypeLoan")]
+        public int TypeLoanId { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required")]
+        [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
+        [Display(Name = "LoanState")]
+        public int LoanStateId { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required")]
+        [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
         [Display(Name = "Order")]
         public int OrderId { get; set; }
 
@@ -100,6 +110,10 @@ namespace ECommerce.Common.Models
         public virtual Warehouse Warehouse { get; set; }
 
         public virtual State State { get; set; }
+
+        public virtual TypeLoan TypeLoan { get; set; }
+
+        public virtual LoanState LoanState { get; set; }
 
         public virtual Company Company { get; set; }
     }

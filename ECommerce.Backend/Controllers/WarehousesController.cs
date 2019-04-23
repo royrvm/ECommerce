@@ -43,13 +43,16 @@ namespace ECommerce.Backend.Controllers
 
         // GET: Warehouses/Create
         public ActionResult Create()
-        {
-
+        {            
+            //TODO still i don´t created the getmainwarehouses
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
             ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName");
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name");
+
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             var warehouse = new Warehouse { CompanyId = user.CompanyId, };
+            //var mainwarehouse = new MainWarehouse { MainWarehouseId = user.MainWarehouseId, };
             return View(warehouse);
         }
 
@@ -60,6 +63,10 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Warehouse warehouse)
         {
+            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+            .Select(x => new { x.Key, x.Value.Errors })
+            .ToArray();
+
             if (ModelState.IsValid)
             {
                 db.Warehouses.Add(warehouse);
