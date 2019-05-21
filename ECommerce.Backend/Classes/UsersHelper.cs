@@ -28,7 +28,7 @@ namespace ECommerce.Backend.Classes
             return response.Succeeded;
         }
 
-        public static bool UpdateUserName(string currentUserName, string newUserName)
+        public static bool UpdateUserName(string currentUserName, string newUserName,string roleName)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContext));
             var userASP = userManager.FindByEmail(currentUserName);
@@ -39,8 +39,12 @@ namespace ECommerce.Backend.Classes
 
             userASP.UserName = newUserName;
             userASP.Email = newUserName;
+            //userASP.Roles = roleName;
+            //userManager.AddToRole(userASP.Id, roleName);
             var response = userManager.Update(userASP);
             return response.Succeeded;
+
+            
         }
 
         public static void CheckRole(string roleName)

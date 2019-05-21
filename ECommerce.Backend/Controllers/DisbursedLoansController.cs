@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
+using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
@@ -19,7 +20,7 @@ namespace ECommerce.Backend.Controllers
         // GET: DisbursedLoans
         public async Task<ActionResult> Index()
         {
-            var disbursedLoans = db.DisbursedLoans.Include(d => d.Company).Include(d => d.Customer).Include(d => d.LoanState).Include(d => d.State).Include(d => d.TypeLoan).Include(d => d.Warehouse);
+            var disbursedLoans = db.Orders.Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
             return View(await disbursedLoans.ToListAsync());
         }
 
@@ -39,7 +40,7 @@ namespace ECommerce.Backend.Controllers
         }
 
         // GET: DisbursedLoans/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
             ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name");
             ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "UserName");
@@ -47,7 +48,34 @@ namespace ECommerce.Backend.Controllers
             ViewBag.StateId = new SelectList(db.States, "StateId", "Description");
             ViewBag.TypeLoanId = new SelectList(db.TypeLoans, "TypeLoanId", "Description");
             ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name");
-            return View();
+
+            //var details = db.Orders.Where(odt => odt.UserName == userName).ToList;
+            Order orders = db.Orders.Find(id);
+
+            DisbursedLoan views = new DisbursedLoan()
+            {
+                //UserName = User.Identity.Name,
+                CompanyId = orders.CompanyId,                
+                CustomerId = orders.CustomerId,
+                WarehouseId = orders.WarehouseId,
+                //TypeLoanId
+                //LoanStateId
+                OrderId = orders.OrderId,
+                StateId = orders.StateId,
+                StartDate = orders.StartDate,                
+                EndDate = orders.EndDate,
+                Period = orders.Period,
+                UserName = User.Identity.Name,
+                Remarks=orders.Remarks,
+                BorrowedCapital = orders.BorrowedCapital,
+                Interest=orders.Interest,
+                Total=orders.Total,
+                Balance = orders.Balance,
+                DailyPayment=orders.DailyPayment,
+                OperatingExpenses=orders.OperatingExpenses,
+            };
+
+            return View(views);
         }
 
         // POST: DisbursedLoans/Create
@@ -55,7 +83,7 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "DisbursedLoanId,CompanyId,CustomerId,WarehouseId,StateId,TypeLoanId,LoanStateId,OrderId,StartDate,EndDate,Period,UserName,Remarks,BorrowedCapital,Interest,Total,Balance,DailyPayment,OperatingExpenses")] DisbursedLoan disbursedLoan)
+        public async Task<ActionResult> Create(DisbursedLoan disbursedLoan)
         {
             if (ModelState.IsValid)
             {

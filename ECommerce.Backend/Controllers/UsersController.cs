@@ -228,13 +228,16 @@ namespace ECommerce.Backend.Controllers
                 var currentUser = db2.Users.Find(view.UserId);
                 if(currentUser.UserName!=view.UserName)
                 {
-                    UsersHelper.UpdateUserName(currentUser.UserName, view.UserName);
+                    UsersHelper.UpdateUserName(currentUser.UserName, view.UserName,view.AspRoles);
+                    
                 }
                 db2.Dispose();
 
                 var user = this.ToUserEdit(view, pic);
                 this.db.Entry(user).State = EntityState.Modified;
                 await this.db.SaveChangesAsync();
+                UsersHelper.DeleteUser(user.UserName);
+                UsersHelper.CreateUserASP(user.UserName, user.AspRoles);
                 return RedirectToAction("Index");
             }
 

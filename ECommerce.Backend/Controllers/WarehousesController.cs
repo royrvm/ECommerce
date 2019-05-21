@@ -63,10 +63,6 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Warehouse warehouse)
         {
-            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
-            .Select(x => new { x.Key, x.Value.Errors })
-            .ToArray();
-
             if (ModelState.IsValid)
             {
                 db.Warehouses.Add(warehouse);
@@ -77,6 +73,7 @@ namespace ECommerce.Backend.Controllers
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", warehouse.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", warehouse.DistrictId);
             ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName", warehouse.UserId);
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", warehouse.MainWarehouseId);
             return View(warehouse);
         }
 
@@ -95,6 +92,7 @@ namespace ECommerce.Backend.Controllers
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", warehouse.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", warehouse.DistrictId);
             ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName", warehouse.UserId);
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", warehouse.MainWarehouseId);
             return View(warehouse);
         }
 
@@ -105,6 +103,10 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Warehouse warehouse)
         {
+            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+            .Select(x => new { x.Key, x.Value.Errors })
+            .ToArray();
+
             if (ModelState.IsValid)
             {
                 db.Entry(warehouse).State = EntityState.Modified;
@@ -114,6 +116,7 @@ namespace ECommerce.Backend.Controllers
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", warehouse.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", warehouse.DistrictId);
             ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName", warehouse.UserId);
+            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name",warehouse.MainWarehouseId);
             return View(warehouse);
         }
 

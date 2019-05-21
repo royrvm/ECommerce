@@ -73,11 +73,6 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Order order)
         {
-            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
-             .Select(x => new { x.Key, x.Value.Errors })
-             .ToArray();
-
-
             if (ModelState.IsValid)
             {
                 db.Orders.Add(order);
@@ -113,8 +108,12 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "OrderId,CustomerId,WarehouseId,StateId,StartDate,EndDate,UserName,Remarks,BorrowedCapital,Interest,Total,Balance,DailyPayment,OperatingExpenses")] Order order)
+        public async Task<ActionResult> Edit(Order order)
         {
+            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+             .Select(x => new { x.Key, x.Value.Errors })
+             .ToArray();
+
             if (ModelState.IsValid)
             {
                 db.Entry(order).State = EntityState.Modified;

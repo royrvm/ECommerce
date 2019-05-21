@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ECommerce.Common.Models.DisbursedLoan>
+﻿@model IEnumerable<ECommerce.Common.Models.Order>
 
 @{
     ViewBag.Title = "Index";
@@ -12,40 +12,19 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Company.Name)
+            @Html.DisplayNameFor(model => model.OrderId)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Customer.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanState.Description)
+            @Html.DisplayNameFor(model => model.Customer.FullName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.State.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TypeLoan.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Warehouse.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.StartDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EndDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Period)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.BorrowedCapital)
@@ -57,9 +36,6 @@
             @Html.DisplayNameFor(model => model.Total)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Balance)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.DailyPayment)
         </th>
         <th>
@@ -68,68 +44,45 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Customer.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LoanState.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.State.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TypeLoan.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Warehouse.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Period)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BorrowedCapital)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Interest)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Total)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Balance)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DailyPayment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OperatingExpenses)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DisbursedLoanId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DisbursedLoanId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DisbursedLoanId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BorrowedCapital)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Interest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DailyPayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OperatingExpenses)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Create", new { id = item.OrderId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderId })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -116,5 +116,7 @@ namespace ECommerce.Common.Models
         public virtual LoanState LoanState { get; set; }
 
         public virtual Company Company { get; set; }
+
+
     }
 }
