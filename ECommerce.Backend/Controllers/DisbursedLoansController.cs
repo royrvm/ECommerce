@@ -41,27 +41,21 @@ namespace ECommerce.Backend.Controllers
 
         // GET: DisbursedLoans/Create
         public ActionResult Create(int? id)
-        {
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name");
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "UserName");
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description");
-            ViewBag.StateId = new SelectList(db.States, "StateId", "Description");
-            ViewBag.TypeLoanId = new SelectList(db.TypeLoans, "TypeLoanId", "Description");
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name");
+        {           
 
             //var details = db.Orders.Where(odt => odt.UserName == userName).ToList;
             Order orders = db.Orders.Find(id);
 
+            
+
             DisbursedLoan views = new DisbursedLoan()
             {
                 //UserName = User.Identity.Name,
-                CompanyId = orders.CompanyId,                
+                CompanyId = orders.CompanyId,
                 CustomerId = orders.CustomerId,
                 WarehouseId = orders.WarehouseId,
-                //TypeLoanId
-                //LoanStateId
                 OrderId = orders.OrderId,
-                StateId = orders.StateId,
+                StateId = DBHelper.GetState("Disbursed", db),
                 StartDate = orders.StartDate,                
                 EndDate = orders.EndDate,
                 Period = orders.Period,
@@ -74,6 +68,14 @@ namespace ECommerce.Backend.Controllers
                 DailyPayment=orders.DailyPayment,
                 OperatingExpenses=orders.OperatingExpenses,
             };
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            
+
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", orders.CompanyId);
+            ViewBag.CustomerId = new SelectList(CombosHelper.GetCustomers(user.CompanyId), "CustomerId", "FullName", orders.CustomerId);
+            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description");
+            ViewBag.TypeLoanId = new SelectList(db.TypeLoans, "TypeLoanId", "Description");
+            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", orders.WarehouseId);
 
             return View(views);
         }

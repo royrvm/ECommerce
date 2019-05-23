@@ -34,5 +34,18 @@ namespace ECommerce.Backend.Classes
 
             return state.StateId;
         }
+
+        public static int GetStTypeLoan(string description, LocalDataContext db)
+        {
+            var typeLoan = db.TypeLoans.Where(s => s.Description == description).FirstOrDefault();
+            if (typeLoan == null)
+            {
+                typeLoan = new TypeLoan { Description = description, };
+                db.TypeLoans.Add(typeLoan);
+                db.SaveChanges();
+            }
+
+            return typeLoan.TypeLoanId;
+        }
     }
 }
