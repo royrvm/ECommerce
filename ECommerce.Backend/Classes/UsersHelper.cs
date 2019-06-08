@@ -47,6 +47,25 @@ namespace ECommerce.Backend.Classes
             
         }
 
+        public static bool UpdateUserRole(string currentUserName,string lastRoleName, string newRoleName)
+        {
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContext));
+            var userASP = userManager.FindByEmail(currentUserName);
+            if (userASP == null)
+            {
+                return false;
+            }
+
+            userManager.RemoveFromRole(userASP.Id, lastRoleName);
+
+            userManager.AddToRole(userASP.Id, newRoleName);
+            var response = userManager.Update(userASP);
+            return response.Succeeded;
+
+
+        }
+
+
         public static void CheckRole(string roleName)
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(userContext));

@@ -212,7 +212,8 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(UserView view)
         {
-
+            var userLast = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            //var role= db.Users.Where(r=>)
             if (ModelState.IsValid)
             {
                 var pic = view.Photo;
@@ -229,15 +230,16 @@ namespace ECommerce.Backend.Controllers
                 if(currentUser.UserName!=view.UserName)
                 {
                     UsersHelper.UpdateUserName(currentUser.UserName, view.UserName,view.AspRoles);
-                    
                 }
                 db2.Dispose();
 
                 var user = this.ToUserEdit(view, pic);
+
+                UsersHelper.UpdateUserRole(currentUser.UserName, userLast.AspRoles, user.AspRoles);
+
+
                 this.db.Entry(user).State = EntityState.Modified;
                 await this.db.SaveChangesAsync();
-                UsersHelper.DeleteUser(user.UserName);
-                UsersHelper.CreateUserASP(user.UserName, user.AspRoles);
                 return RedirectToAction("Index");
             }
 
