@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ECommerce.Common.Models.DisbursedLoan>
+﻿@model IEnumerable<ECommerce.Common.Models.Order>
 
 @{
     ViewBag.Title = "Index";
@@ -11,6 +11,9 @@
 </p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Customer.FullName)
         </th>
@@ -45,6 +48,9 @@
     {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Customer.FullName)
             </td>
             <td>
@@ -72,9 +78,8 @@
                 @Html.DisplayFor(modelItem => item.OperatingExpenses)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.DisbursedLoanId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.DisbursedLoanId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.DisbursedLoanId })
+                @Html.ActionLink("Edit", "Create", new { id = item.OrderId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderId })
             </td>
         </tr>
     }

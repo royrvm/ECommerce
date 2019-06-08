@@ -20,7 +20,7 @@ namespace ECommerce.Backend.Controllers
         // GET: DisbursedLoans
         public async Task<ActionResult> Index()
         {
-            var disbursedLoans = db.Orders.Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
+            var disbursedLoans = db.DisbursedLoans.Where(state=>state.StateId==2).Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
             return View(await disbursedLoans.ToListAsync());
         }
 
@@ -41,12 +41,10 @@ namespace ECommerce.Backend.Controllers
 
         // GET: DisbursedLoans/Create
         public ActionResult Create(int? id)
-        {           
+        {
 
             //var details = db.Orders.Where(odt => odt.UserName == userName).ToList;
             Order orders = db.Orders.Find(id);
-
-            
 
             DisbursedLoan views = new DisbursedLoan()
             {
@@ -56,26 +54,28 @@ namespace ECommerce.Backend.Controllers
                 WarehouseId = orders.WarehouseId,
                 OrderId = orders.OrderId,
                 StateId = DBHelper.GetState("Disbursed", db),
-                StartDate = orders.StartDate,                
+                TypeLoanId = DBHelper.GetTypeLoan("Renewed", db),
+                LoanStateId = DBHelper.GetLoanState("Common",db),
+                StartDate = orders.StartDate,
                 EndDate = orders.EndDate,
                 Period = orders.Period,
                 UserName = User.Identity.Name,
-                Remarks=orders.Remarks,
+                Remarks = orders.Remarks,
                 BorrowedCapital = orders.BorrowedCapital,
-                Interest=orders.Interest,
-                Total=orders.Total,
+                Interest = orders.Interest,
+                Total = orders.Total,
                 Balance = orders.Balance,
-                DailyPayment=orders.DailyPayment,
-                OperatingExpenses=orders.OperatingExpenses,
+                DailyPayment = orders.DailyPayment,
+                OperatingExpenses = orders.OperatingExpenses,
             };
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            
+
 
             ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", orders.CompanyId);
             ViewBag.CustomerId = new SelectList(CombosHelper.GetCustomers(user.CompanyId), "CustomerId", "FullName", orders.CustomerId);
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description");
-            ViewBag.TypeLoanId = new SelectList(db.TypeLoans, "TypeLoanId", "Description");
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", orders.WarehouseId);
+            //ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description");
+            //ViewBag.TypeLoanId = new SelectList(db.TypeLoans, "TypeLoanId", "Description");
+            //ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", orders.WarehouseId);
 
             return View(views);
         }
@@ -85,22 +85,22 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(DisbursedLoan disbursedLoan)
+        public async Task<ActionResult> Create(DisbursedLoan view)
         {
             if (ModelState.IsValid)
             {
-                db.DisbursedLoans.Add(disbursedLoan);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                var response = MovementsHelper.NewLoan(view, User.Identity.Name);
+                if (response.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                ModelState.AddModelError(string.Empty, response.Message);
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", disbursedLoan.CompanyId);
-            ViewBag.CustomerId = new SelectList(db.Customers, "CustomerId", "UserName", disbursedLoan.CustomerId);
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description", disbursedLoan.LoanStateId);
-            ViewBag.StateId = new SelectList(db.States, "StateId", "Description", disbursedLoan.StateId);
-            ViewBag.TypeLoanId = new SelectList(db.TypeLoans, "TypeLoanId", "Description", disbursedLoan.TypeLoanId);
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", disbursedLoan.WarehouseId);
-            return View(disbursedLoan);
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name", view.CompanyId);
+            ViewBag.CustomerId = new SelectList(CombosHelper.GetCustomers(view.CompanyId), "CustomerId", "FullName", view.CustomerId);
+            return View(view);
         }
 
         // GET: DisbursedLoans/Edit/5
@@ -129,7 +129,7 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "DisbursedLoanId,CompanyId,CustomerId,WarehouseId,StateId,TypeLoanId,LoanStateId,OrderId,StartDate,EndDate,Period,UserName,Remarks,BorrowedCapital,Interest,Total,Balance,DailyPayment,OperatingExpenses")] DisbursedLoan disbursedLoan)
+        public async Task<ActionResult> Edit(DisbursedLoan disbursedLoan)
         {
             if (ModelState.IsValid)
             {

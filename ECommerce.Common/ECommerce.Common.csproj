@@ -55,6 +55,7 @@
     <Compile Include="Models\MainWarehouse.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\TypeLoan.cs" />
     <Compile Include="Models\User.cs" />

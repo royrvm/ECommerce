@@ -18,7 +18,10 @@
     @Html.HiddenFor(model => model.OrderId)
     @Html.HiddenFor(model => model.UserName)
     @Html.HiddenFor(model => model.CompanyId)
+    @Html.HiddenFor(model => model.WarehouseId)
     @Html.HiddenFor(model => model.StateId)
+    @Html.HiddenFor(model => model.TypeLoanId)
+    @Html.HiddenFor(model => model.LoanStateId)
 
 
     <div class="form-group">
@@ -45,21 +48,21 @@
             </div>
         </div>*@
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.TypeLoanId, "TypeLoanId", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("TypeLoanId", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.TypeLoanId, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.TypeLoanId, "TypeLoanId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("TypeLoanId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeLoanId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.LoanStateId, "LoanStateId", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("LoanStateId", null, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.LoanStateId, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.LoanStateId, "LoanStateId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("LoanStateId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.LoanStateId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -153,7 +156,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+    @*<script>
         $("#CustomerId").prop("disabled", true);
-    </script>
+    </script>*@
 }

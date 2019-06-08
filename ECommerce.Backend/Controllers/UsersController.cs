@@ -210,7 +210,7 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit( UserView view)
+        public async Task<ActionResult> Edit(UserView view)
         {
 
             if (ModelState.IsValid)

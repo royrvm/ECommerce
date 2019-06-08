@@ -170,6 +170,7 @@
     <Compile Include="Classes\CombosHelper.cs" />
     <Compile Include="Classes\DBHelper.cs" />
     <Compile Include="Classes\MailHelper.cs" />
+    <Compile Include="Classes\MovementsHelper.cs" />
     <Compile Include="Classes\UsersHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Controllers\MainWarehousesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\OrdersDisbursedController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
     <Compile Include="Controllers\TypeLoansController.cs" />
     <Compile Include="Controllers\Users1Controller.cs" />
@@ -336,6 +338,9 @@
     <Content Include="Views\DisbursedLoans\Details.cshtml" />
     <Content Include="Views\DisbursedLoans\Edit.cshtml" />
     <Content Include="Views\DisbursedLoans\Index.cshtml" />
+    <Content Include="Views\OrdersDisbursed\Index.cshtml" />
+    <Content Include="Views\OrdersDisbursed\Edit.cshtml" />
+    <Content Include="Views\OrdersDisbursed\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
