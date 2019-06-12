@@ -19,5 +19,9 @@ namespace ECommerce.Common.Models
         public string Description { get; set; }
 
         public virtual ICollection<DisbursedLoan> DisbursedLoans { get; set; }
+
+        public virtual ICollection<Collection> Collections{ get; set; }
+
+        public virtual ICollection<CollectionTmp> CollectionTmps { get; set; }
     }
 }

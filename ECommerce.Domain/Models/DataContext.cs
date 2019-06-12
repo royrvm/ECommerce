@@ -32,6 +32,16 @@ namespace ECommerce.Domain.Models
 
         public DbSet<Common.Models.Order> Orders { get; set; }
 
-        //public DbSet<Common.Models.OrderDetail> OrderDetails { get; set; }
+        public DbSet<Common.Models.MainWarehouse> MainWarehouses { get; set; }
+
+        public DbSet<Common.Models.TypeLoan> TypeLoans { get; set; }
+
+        public DbSet<Common.Models.LoanState> LoanStates { get; set; }
+
+        public DbSet<Common.Models.DisbursedLoan> DisbursedLoans { get; set; }
+
+        public DbSet<Common.Models.Collection> Collections { get; set; }
+
+        public DbSet<Common.Models.CollectionTmp> CollectionTmps { get; set; }
     }
 }

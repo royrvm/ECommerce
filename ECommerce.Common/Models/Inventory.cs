@@ -15,6 +15,11 @@ namespace ECommerce.Common.Models
         [Required]
         public int WarehouseId { get; set; }
 
+        [Required(ErrorMessage = "The field {0} is required")]
+        [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
+        [Display(Name = "Company")]
+        public int CompanyId { get; set; }
+
         [Required(ErrorMessage ="The field {0} is required")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}",ApplyFormatInEditMode =false)]
@@ -39,5 +44,11 @@ namespace ECommerce.Common.Models
         public double Total { get{return Subtotal-Renewedcredit; } }
 
         public virtual Warehouse Warehouse { get; set; }
+
+        public virtual Company Company { get; set; }
+
+        public virtual ICollection<Collection> Collections { get; set; }
+
+        public virtual ICollection<CollectionTmp> CollectionTmps { get; set; }
     }
 }

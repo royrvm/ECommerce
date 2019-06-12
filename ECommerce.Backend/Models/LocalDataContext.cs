@@ -11,12 +11,6 @@
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
         }
 
-        public System.Data.Entity.DbSet<ECommerce.Common.Models.MainWarehouse> MainWarehouses { get; set; }
 
-        public System.Data.Entity.DbSet<ECommerce.Common.Models.TypeLoan> TypeLoans { get; set; }
-
-        public System.Data.Entity.DbSet<ECommerce.Common.Models.LoanState> LoanStates { get; set; }
-
-        public System.Data.Entity.DbSet<ECommerce.Common.Models.DisbursedLoan> DisbursedLoans { get; set; }
     }
 }

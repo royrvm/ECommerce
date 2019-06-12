@@ -183,6 +183,7 @@
     <Compile Include="Controllers\LoanStatesController.cs" />
     <Compile Include="Controllers\MainWarehousesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\OpenDayController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\OrdersDisbursedController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
@@ -341,6 +342,7 @@
     <Content Include="Views\OrdersDisbursed\Index.cshtml" />
     <Content Include="Views\OrdersDisbursed\Edit.cshtml" />
     <Content Include="Views\OrdersDisbursed\Create.cshtml" />
+    <Content Include="Views\OpenDay\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
