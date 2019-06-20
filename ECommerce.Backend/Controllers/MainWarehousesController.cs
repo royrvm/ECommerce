@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
+using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
@@ -41,7 +42,9 @@ namespace ECommerce.Backend.Controllers
         // GET: MainWarehouses/Create
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name");
+            var users = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name",users.CompanyId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name");
             return View();
@@ -52,8 +55,9 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "MainWarehouseId,CompanyId,WarehouseId,Name,Phone,Address,DepartmentId,DistrictId")] MainWarehouse mainWarehouse)
+        public async Task<ActionResult> Create(MainWarehouse mainWarehouse)
         {
+
             if (ModelState.IsValid)
             {
                 db.MainWarehouses.Add(mainWarehouse);

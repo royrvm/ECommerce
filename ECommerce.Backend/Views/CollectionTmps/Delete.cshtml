@@ -1,0 +1,88 @@
+﻿@model ECommerce.Common.Models.CollectionTmp
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>CollectionTmp</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Company.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisbursedLoan.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisbursedLoan.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanState.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanState.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Warehouse.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Warehouse.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CollectionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CollectionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Payment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentBalance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentBalance)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

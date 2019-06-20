@@ -55,5 +55,7 @@ namespace ECommerce.Common.Models
         public virtual ICollection<Collection> Collections { get; set; }
 
         public virtual ICollection<CollectionTmp> CollectionTmps { get; set; }
+
+        public virtual ICollection<OpenDay> OpenDays { get; set; }
     }
 }

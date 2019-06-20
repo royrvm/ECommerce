@@ -59,7 +59,7 @@ namespace ECommerce.Backend.Controllers
 
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
-            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name");
+            ViewBag.MainWarehouseId = new SelectList(CombosHelper.GetMainWarehouses(), "MainWarehouseId", "Name");
             ViewBag.userRoles = SelectUserRolers();
             return View(userlog);
         }
@@ -212,8 +212,6 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(UserView view)
         {
-            var userLast = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            //var role= db.Users.Where(r=>)
             if (ModelState.IsValid)
             {
                 var pic = view.Photo;
@@ -235,10 +233,11 @@ namespace ECommerce.Backend.Controllers
 
                 var user = this.ToUserEdit(view, pic);
 
+                this.db.Entry(user).State = EntityState.Modified;
+
+                var userLast = db.Users.Where(u => u.UserName == view.UserName).FirstOrDefault();
                 UsersHelper.UpdateUserRole(currentUser.UserName, userLast.AspRoles, user.AspRoles);
 
-
-                this.db.Entry(user).State = EntityState.Modified;
                 await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

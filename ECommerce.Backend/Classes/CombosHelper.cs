@@ -66,6 +66,17 @@ namespace ECommerce.Backend.Classes
             return customers.OrderBy(c => c.FirstName).ThenBy(c=>c.LastName).ToList();
         }
 
+        public static List<MainWarehouse> GetMainWarehouses()
+        {
+            var mainwarehouses = db.MainWarehouses.ToList();
+            mainwarehouses.Add(new MainWarehouse
+            {
+                DepartmentId = 0,
+                Name = "[Select a mainwarehouse...]"
+            });
+            return mainwarehouses.OrderBy(d => d.Name).ToList();
+        }
+
         public void Dispose()
         {
             db.Dispose();

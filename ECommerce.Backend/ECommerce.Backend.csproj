@@ -173,6 +173,7 @@
     <Compile Include="Classes\MovementsHelper.cs" />
     <Compile Include="Classes\UsersHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CollectionTmpsController.cs" />
     <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\DepartmentsController.cs" />
@@ -183,7 +184,7 @@
     <Compile Include="Controllers\LoanStatesController.cs" />
     <Compile Include="Controllers\MainWarehousesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\OpenDayController.cs" />
+    <Compile Include="Controllers\OpenDaysController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\OrdersDisbursedController.cs" />
     <Compile Include="Controllers\StatesController.cs" />
@@ -342,7 +343,16 @@
     <Content Include="Views\OrdersDisbursed\Index.cshtml" />
     <Content Include="Views\OrdersDisbursed\Edit.cshtml" />
     <Content Include="Views\OrdersDisbursed\Create.cshtml" />
-    <Content Include="Views\OpenDay\Index.cshtml" />
+    <Content Include="Views\OpenDays\Create.cshtml" />
+    <Content Include="Views\OpenDays\Delete.cshtml" />
+    <Content Include="Views\OpenDays\Details.cshtml" />
+    <Content Include="Views\OpenDays\Edit.cshtml" />
+    <Content Include="Views\OpenDays\Index.cshtml" />
+    <Content Include="Views\CollectionTmps\Create.cshtml" />
+    <Content Include="Views\CollectionTmps\Delete.cshtml" />
+    <Content Include="Views\CollectionTmps\Details.cshtml" />
+    <Content Include="Views\CollectionTmps\Edit.cshtml" />
+    <Content Include="Views\CollectionTmps\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -56,8 +56,7 @@ namespace ECommerce.Common.Models
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
         [Display(Name = "Company")]
         public int CompanyId { get; set; }
-
-        [Required(ErrorMessage = "The field {0} is required")]
+                
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
         [Display(Name = "Company")]
         public int MainWarehouseId { get; set; }

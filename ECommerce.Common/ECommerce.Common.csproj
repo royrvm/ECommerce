@@ -54,7 +54,9 @@
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\LoanState.cs" />
+    <Compile Include="Models\MainInventory.cs" />
     <Compile Include="Models\MainWarehouse.cs" />
+    <Compile Include="Models\OpenDay.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Response.cs" />

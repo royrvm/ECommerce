@@ -4,11 +4,15 @@
     ViewBag.Title = "Customers";
 }
 
-    <h2>Customers</h2>
+<h2>Customers</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 <table class="table">
     <tr>
         <th>
@@ -32,32 +36,34 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Department.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.District.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CustomerId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CustomerId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CustomerId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Department.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.District.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.CustomerId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CustomerId })
+                <input type="checkbox" checked data-toggle="toggle" data-on="Ready" data-off="Not Ready" data-onstyle="success" data-offstyle="danger">
+            </td>
+        </tr>
+    }
 
 </table>

@@ -43,11 +43,15 @@ namespace ECommerce.Backend.Controllers
         // GET: Users1/Create
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name");
-            ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name");
+            ViewBag.CompanyId = new SelectList(CombosHelper.GetCompanies(), "CompanyId", "Name");
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name");
-            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name");
-            return View();
+            //ViewBag.MainWarehouseId = new SelectList(CombosHelper.GetMainWarehouses(), "MainWarehouseId", "Name");
+            var user = new User
+            {
+                MainWarehouseId = 1,
+            };
+            return View(user);
         }
 
         // POST: Users1/Create
@@ -55,24 +59,21 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "UserId,UserName,FirstName,LastName,Phone,Address,Photo,DepartmentId,DistrictId,CompanyId,MainWarehouseId")] User user)
+        public async Task<ActionResult> Create(User user)
         {
-            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
-             .Select(x => new { x.Key, x.Value.Errors })
-             .ToArray();
 
             if (ModelState.IsValid)
             {
                 db.Users.Add(user);
                 await db.SaveChangesAsync();
-                UsersHelper.CreateUserASP(user.UserName, "Admin");
+                UsersHelper.CreateUserASP(user.UserName, "User");
                 return RedirectToAction("Index");
             }
 
             ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", user.CompanyId);
             ViewBag.DepartmentId = new SelectList(db.Departments, "DepartmentId", "Name", user.DepartmentId);
             ViewBag.DistrictId = new SelectList(db.Districts, "DistrictId", "Name", user.DistrictId);
-            ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", user.MainWarehouseId);
+            //ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", user.MainWarehouseId);
             return View(user);
         }
 
@@ -135,9 +136,10 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
+            var user = await this.db.Users.FindAsync(id);
+            this.db.Users.Remove(user);
+            await this.db.SaveChangesAsync();
+            UsersHelper.DeleteUser(user.UserName);
             return RedirectToAction("Index");
         }
 

@@ -7,29 +7,29 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Common.Models
 {
-    public class Inventory
+    public class MainInventory
     {
         [Key]
-        public int InventoryId { get; set; }
+        public int MainInventoryId { get; set; }
 
         [Required]
-        public int WarehouseId { get; set; }
+        public int MainWarehouseId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [Range(1, double.MaxValue, ErrorMessage = "You must select a {0}")]
         [Display(Name = "Company")]
         public int CompanyId { get; set; }
 
-        [Required(ErrorMessage ="The field {0} is required")]
+        [Required(ErrorMessage = "The field {0} is required")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString ="{0:yyyy-MM-dd}",ApplyFormatInEditMode =false)]
-        public DateTime Date{ get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = false)]
+        public DateTime Date { get; set; }
 
-        [DisplayFormat(DataFormatString ="{0:C2}",ApplyFormatInEditMode =false)]
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public double Collection { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
-        public double Pettycash{ get; set; }
+        public double Pettycash { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public double Administrativeexpense { get; set; }
@@ -44,13 +44,13 @@ namespace ECommerce.Common.Models
         public double Total { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
-        public double InitialLoan { get; set; }
+        public double WareHouseInitialLoan { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
-        public double TotalLoan { get; set; }
+        public double WareHouseTotalLoan { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
-        public double TotalBalance { get; set; }
+        public double WareHouseTotalBalance { get; set; }
 
         public virtual Warehouse Warehouse { get; set; }
 

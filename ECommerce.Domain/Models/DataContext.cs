@@ -43,5 +43,7 @@ namespace ECommerce.Domain.Models
         public DbSet<Common.Models.Collection> Collections { get; set; }
 
         public DbSet<Common.Models.CollectionTmp> CollectionTmps { get; set; }
+
+        public DbSet<Common.Models.MainInventory> MainInventories { get; set; }
     }
 }

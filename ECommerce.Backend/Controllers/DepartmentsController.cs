@@ -49,7 +49,7 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "DepartmentId,Name")] Department department)
+        public async Task<ActionResult> Create(Department department)
         {
             if (ModelState.IsValid)
             {
