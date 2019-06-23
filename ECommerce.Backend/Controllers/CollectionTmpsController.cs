@@ -19,7 +19,7 @@ namespace ECommerce.Backend.Controllers
         // GET: CollectionTmps
         public async Task<ActionResult> Index()
         {
-            var collectionTmps = db.CollectionTmps.Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse);
+            var collectionTmps = db.CollectionTmps.Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
             return View(await collectionTmps.ToListAsync());
         }
 
@@ -53,7 +53,7 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "CollectionId,CompanyId,WarehouseId,DisbursedLoanId,UserName,LoanStateId,CollectionDate,Payment,CurrentBalance")] CollectionTmp collectionTmp)
+        public async Task<ActionResult> Create(CollectionTmp collectionTmp)
         {
             if (ModelState.IsValid)
             {
@@ -81,11 +81,24 @@ namespace ECommerce.Backend.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", collectionTmp.CompanyId);
-            ViewBag.DisbursedLoanId = new SelectList(db.DisbursedLoans, "DisbursedLoanId", "UserName", collectionTmp.DisbursedLoanId);
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description", collectionTmp.LoanStateId);
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", collectionTmp.WarehouseId);
-            return View(collectionTmp);
+
+            return PartialView(collectionTmp);
+        }
+
+        private CollectionTmp ToCollectionTmp(CollectionTmp view)
+        {
+            return new CollectionTmp
+            {
+                CollectionId= view.CollectionId,
+                CompanyId=view.CompanyId,
+                WarehouseId=view.WarehouseId,
+                DisbursedLoanId=view.DisbursedLoanId,
+                UserName=view.UserName,
+                LoanStateId=view.LoanStateId,
+                CollectionDate=view.CollectionDate,
+                Payment=view.Payment,
+                CurrentBalance= view.CurrentBalance  - view.Payment,
+            };
         }
 
         // POST: CollectionTmps/Edit/5
@@ -93,18 +106,35 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "CollectionId,CompanyId,WarehouseId,DisbursedLoanId,UserName,LoanStateId,CollectionDate,Payment,CurrentBalance")] CollectionTmp collectionTmp)
+        public async Task<ActionResult> Edit(CollectionTmp collectionTmp)
         {
+
+            var disbusedLoan = db.DisbursedLoans.Where(d => d.DisbursedLoanId == collectionTmp.DisbursedLoanId).FirstOrDefault();
+
+            var view= new CollectionTmp
+            {
+                CollectionId = collectionTmp.CollectionId,
+                CompanyId = collectionTmp.CompanyId,
+                WarehouseId = collectionTmp.WarehouseId,
+                DisbursedLoanId = collectionTmp.DisbursedLoanId,
+                UserName = collectionTmp.UserName,
+                LoanStateId = collectionTmp.LoanStateId,
+                CollectionDate = collectionTmp.CollectionDate,
+                Payment = collectionTmp.Payment,
+                CurrentBalance = disbusedLoan.Balance - collectionTmp.Payment,
+            };
+
+
             if (ModelState.IsValid)
             {
-                db.Entry(collectionTmp).State = EntityState.Modified;
+                //var collection = this.ToCollectionTmp(collectionTmp);
+
+                db.Entry(view).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", collectionTmp.CompanyId);
-            ViewBag.DisbursedLoanId = new SelectList(db.DisbursedLoans, "DisbursedLoanId", "UserName", collectionTmp.DisbursedLoanId);
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description", collectionTmp.LoanStateId);
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", collectionTmp.WarehouseId);
+
+
             return View(collectionTmp);
         }
 
