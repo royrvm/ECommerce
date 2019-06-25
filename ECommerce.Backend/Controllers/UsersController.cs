@@ -59,7 +59,7 @@ namespace ECommerce.Backend.Controllers
 
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
-            ViewBag.MainWarehouseId = new SelectList(CombosHelper.GetMainWarehouses(), "MainWarehouseId", "Name");
+            ViewBag.MainWarehouseId = new SelectList(CombosHelper.GetMainWarehouses(user.CompanyId), "MainWarehouseId", "Name");
             ViewBag.userRoles = SelectUserRolers();
             return View(userlog);
         }

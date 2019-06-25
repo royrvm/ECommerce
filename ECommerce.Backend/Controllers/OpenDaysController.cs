@@ -71,7 +71,7 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OpenDay view)
         {
-            var response = MovementsHelper.NewCollection(view, User.Identity.Name);
+            var response = MovementsHelper.NewCollectionTmp(view, User.Identity.Name);
 
             if (ModelState.IsValid)
             {

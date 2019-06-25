@@ -25,6 +25,11 @@ namespace ECommerce.Common.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
+        [MaxLength(8, ErrorMessage = "The field {0} must be maximun {1} characters lenght")]
+        [Display(Name = "DNI")]
+        public string DNI { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is required")]
         [MaxLength(50, ErrorMessage = "The filed {0} must be maximun {1} characters length")]
         [Display(Name = "First name")]
         public string FirstName { get; set; }

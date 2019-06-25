@@ -7,7 +7,7 @@
 <h2>Customers</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",new{ },new {@class="btn btn-primary" })
 </p>
 
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -58,10 +58,9 @@
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.CustomerId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.CustomerId })
-                <input type="checkbox" checked data-toggle="toggle" data-on="Ready" data-off="Not Ready" data-onstyle="success" data-offstyle="danger">
+                @Html.ActionLink("Edit", "Edit", new { id = item.CustomerId },new {@class="btn btn-success" })
+                @Html.ActionLink("Details", "Details", new { id = item.CustomerId },new {@class="btn btn-info" })
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.CustomerId },new {@class="btn btn-danger" })*@
             </td>
         </tr>
     }

@@ -26,6 +26,9 @@ namespace ECommerce.Common.Models
         [MaxLength(256, ErrorMessage = "The filed {0} must be maximun {1} characters length")]
         public string UserName { get; set; }
 
+        [Required(ErrorMessage = "The field {0} is required")]
+        public bool OnOff { get; set; }
+
         public virtual Company Company { get; set; }
     }
 }

@@ -43,15 +43,18 @@ namespace ECommerce.Backend.Controllers
 
         // GET: Warehouses/Create
         public ActionResult Create()
-        {            
+        {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var warehouse = new Warehouse { CompanyId = user.CompanyId, };
+
             //TODO still i don´t created the getmainwarehouses
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name");
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name");
-            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName");
+            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(user.CompanyId), "UserId", "UserName");
             ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name");
 
-            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            var warehouse = new Warehouse { CompanyId = user.CompanyId, };
+            
+
             //var mainwarehouse = new MainWarehouse { MainWarehouseId = user.MainWarehouseId, };
             return View(warehouse);
         }
@@ -63,6 +66,8 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(Warehouse warehouse)
         {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
             if (ModelState.IsValid)
             {
                 db.Warehouses.Add(warehouse);
@@ -72,7 +77,7 @@ namespace ECommerce.Backend.Controllers
 
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", warehouse.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", warehouse.DistrictId);
-            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName", warehouse.UserId);
+            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(user.CompanyId), "UserId", "UserName", warehouse.UserId);
             ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", warehouse.MainWarehouseId);
             return View(warehouse);
         }
@@ -80,6 +85,8 @@ namespace ECommerce.Backend.Controllers
         // GET: Warehouses/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -91,7 +98,7 @@ namespace ECommerce.Backend.Controllers
             }
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", warehouse.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", warehouse.DistrictId);
-            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName", warehouse.UserId);
+            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(user.CompanyId), "UserId", "UserName", warehouse.UserId);
             ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name", warehouse.MainWarehouseId);
             return View(warehouse);
         }
@@ -103,6 +110,8 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Warehouse warehouse)
         {
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
             var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
             .Select(x => new { x.Key, x.Value.Errors })
             .ToArray();
@@ -115,7 +124,7 @@ namespace ECommerce.Backend.Controllers
             }
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", warehouse.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", warehouse.DistrictId);
-            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(), "UserId", "UserName", warehouse.UserId);
+            ViewBag.UserId = new SelectList(CombosHelper.GetUsers(user.CompanyId), "UserId", "UserName", warehouse.UserId);
             ViewBag.MainWarehouseId = new SelectList(db.MainWarehouses, "MainWarehouseId", "Name",warehouse.MainWarehouseId);
             return View(warehouse);
         }
