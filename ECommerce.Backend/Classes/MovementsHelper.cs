@@ -26,8 +26,6 @@ namespace ECommerce.Backend.Classes
                     var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
 
                     var lastOrder = db.Orders.Where(l => l.OrderId == view.OrderId).FirstOrDefault();
-
-
                     lastOrder.CompanyId = view.CompanyId;
                     lastOrder.CustomerId = view.CustomerId;
                     lastOrder.WarehouseId = view.WarehouseId;
@@ -87,7 +85,7 @@ namespace ECommerce.Backend.Classes
             
         }
 
-        public static Response NewCollection(OpenDay view, string userName)
+        public static Response NewCollectionTmp(OpenDay view, string userName)
         {
             using (var transacction = db.Database.BeginTransaction())
             {
@@ -164,6 +162,154 @@ namespace ECommerce.Backend.Classes
                         };
                         db.CollectionTmps.Add(collectionTmp);                        
                     }
+
+                    db.SaveChanges();
+
+                    transacction.Commit();
+                    return new Response { Succeeded = true, };
+                }
+                catch (Exception ex)
+                {
+                    transacction.Rollback();
+                    return new Response
+                    {
+                        Message = ex.Message,
+                        Succeeded = false,
+                    };
+                }
+            }
+
+        }
+
+        public static Response NewCollection(CollectionTmp view, string userName)
+        {
+            using (var transacction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
+                    var openDay = db.OpenDays.Where(opd => opd.CompanyId == user.CompanyId).FirstOrDefault();
+                    var wareHousesID = db.Warehouses.Where(w => w.CompanyId == user.CompanyId).FirstOrDefault();
+                    var inventories = db.Inventories.Where(i => i.WarehouseId == wareHousesID.WarehouseId).Where(d=>d.Date==openDay.OpenDate).FirstOrDefault();
+                    //var mainInventories = db.MainInventories.Where(mi => mi.MainWarehouseId == user.MainWarehouseId).Where(d => d.Date == openDay.OpenDate).FirstOrDefault();
+                    var collectionTmps = db.CollectionTmps.Where(wH => wH.WarehouseId == wareHousesID.WarehouseId).ToList();
+                                       
+                    foreach (CollectionTmp detailcTmp in collectionTmps)
+                    {
+
+
+                        var collection = new Collection
+                        {
+                            InventoryId = inventories.InventoryId,
+                            CompanyId = detailcTmp.CompanyId,
+                            WarehouseId = detailcTmp.WarehouseId,
+                            DisbursedLoanId = detailcTmp.DisbursedLoanId,
+                            UserName = userName,
+                            CollectionDate = detailcTmp.CollectionDate,
+                            Payment = detailcTmp.Payment,
+                            CurrentBalance = detailcTmp.CurrentBalance,
+                            LoanState = detailcTmp.LoanState,
+                        };
+                        db.Collections.Add(collection);
+                        db.CollectionTmps.Remove(detailcTmp);
+
+                    }                    
+
+                    db.SaveChanges();
+
+                    transacction.Commit();
+                    return new Response { Succeeded = true, };
+                }
+                catch (Exception ex)
+                {
+                    transacction.Rollback();
+                    return new Response
+                    {
+                        Message = ex.Message,
+                        Succeeded = false,
+                    };
+                }
+            }
+
+        }
+
+        public static Response UpdateInventories(string userName)
+        {
+            using (var transacction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
+                    var openDay = db.OpenDays.Where(opd => opd.CompanyId == user.CompanyId).Where(onOff=>onOff.OnOff==true).FirstOrDefault();
+                    var wareHousesID = db.Warehouses.Where(w => w.CompanyId == user.CompanyId).FirstOrDefault();
+                    var inventories = db.Inventories.Where(i => i.WarehouseId == wareHousesID.WarehouseId).Where(d => d.Date == openDay.OpenDate).FirstOrDefault();
+                    var inventoryList = db.Inventories.Where(i => i.CompanyId == wareHousesID.CompanyId).ToList();
+                    var mainInventories = db.MainInventories.Where(mi => mi.MainWarehouseId == user.MainWarehouseId).Where(d => d.Date == openDay.OpenDate).FirstOrDefault();
+                    var collection = db.Collections.Where(coll => coll.WarehouseId == user.MainWarehouseId).Where(date => date.CollectionDate == openDay.OpenDate).ToList();
+
+
+                    foreach (Collection detailcTmp in collection)
+                    {
+                        var disbursedloans = db.DisbursedLoans.Where(l => l.DisbursedLoanId == detailcTmp.DisbursedLoanId).FirstOrDefault();
+
+                        disbursedloans.DisbursedLoanId = disbursedloans.CompanyId;
+                        disbursedloans.CustomerId = disbursedloans.CustomerId;
+                        disbursedloans.WarehouseId = disbursedloans.WarehouseId;
+                        disbursedloans.OrderId = disbursedloans.OrderId;
+                        disbursedloans.StateId = DBHelper.GetState("Disbursed", db);
+                        disbursedloans.TypeLoanId = DBHelper.GetTypeLoan("Renewed", db);
+                        disbursedloans.LoanStateId = DBHelper.GetLoanState("Common", db);
+                        disbursedloans.StartDate = disbursedloans.StartDate;
+                        disbursedloans.EndDate = disbursedloans.EndDate;
+                        disbursedloans.Period = disbursedloans.Period;
+                        disbursedloans.UserName = disbursedloans.UserName;
+                        disbursedloans.Remarks = disbursedloans.Remarks;
+                        disbursedloans.BorrowedCapital = disbursedloans.BorrowedCapital;
+                        disbursedloans.Interest = disbursedloans.Interest;
+                        disbursedloans.Total = disbursedloans.Total;
+                        disbursedloans.Balance = detailcTmp.CurrentBalance;
+                        disbursedloans.DailyPayment = disbursedloans.DailyPayment;
+                        disbursedloans.OperatingExpenses = disbursedloans.OperatingExpenses;
+
+                        db.Entry(disbursedloans).State = EntityState.Modified;
+                    }
+
+
+                    var inventory = db.Inventories.Where(l => l.InventoryId == inventories.InventoryId).FirstOrDefault();
+
+                    inventory.InventoryId = inventories.InventoryId;
+                    inventory.WarehouseId = wareHousesID.WarehouseId;
+                    inventory.CompanyId = user.CompanyId;
+                    inventory.Date = inventories.Date;
+                    inventory.Collection = collection.Sum(col => Convert.ToDouble(col.Payment));
+                    //inventory.Collection = inventories.Collection;
+                    inventory.Pettycash = inventories.Pettycash;
+                    inventory.Administrativeexpense = inventories.Administrativeexpense;
+                    inventory.Subtotal = inventories.Subtotal;
+                    inventory.Renewedcredit = inventories.Subtotal;
+                    inventory.Total = inventories.Total;
+                    inventory.InitialLoan = inventories.InitialLoan;
+                    inventory.TotalLoan = inventories.TotalLoan;
+                    inventory.TotalBalance = collection.Sum(col => Convert.ToDouble(col.CurrentBalance));
+
+                    db.Entry(inventory).State = EntityState.Modified;
+
+                    var mainInventory = db.MainInventories.Where(l => l.MainInventoryId == mainInventories.MainInventoryId).FirstOrDefault();
+                    mainInventory.MainInventoryId = mainInventories.MainInventoryId;
+                    mainInventory.MainWarehouseId = mainInventories.MainWarehouseId;
+                    mainInventory.CompanyId = mainInventories.CompanyId;
+                    mainInventory.Date = mainInventories.Date;
+                    mainInventory.Collection = inventoryList.Sum(col => Convert.ToDouble(col.Collection));
+                    mainInventory.Pettycash = mainInventories.Pettycash;
+                    mainInventory.Administrativeexpense = mainInventories.Administrativeexpense;
+                    mainInventory.Subtotal = mainInventories.Subtotal;
+                    mainInventory.Renewedcredit = mainInventories.Renewedcredit;
+                    mainInventory.Total = mainInventories.Total;
+                    mainInventory.WareHouseInitialLoan = mainInventories.WareHouseInitialLoan;
+                    mainInventory.WareHouseTotalLoan = mainInventories.WareHouseTotalLoan;
+                    mainInventory.WareHouseTotalBalance = mainInventories.WareHouseTotalBalance;
+
+                    db.Entry(mainInventory).State = EntityState.Modified;
 
                     db.SaveChanges();
 

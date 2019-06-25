@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using ECommerce.Backend.Models;
 using ECommerce.Common.Models;
+using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
@@ -19,7 +20,8 @@ namespace ECommerce.Backend.Controllers
         // GET: CollectionTmps
         public async Task<ActionResult> Index()
         {
-            var collectionTmps = db.CollectionTmps.Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var collectionTmps = db.CollectionTmps.Where(c=>c.CompanyId==user.CompanyId).Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
             return View(await collectionTmps.ToListAsync());
         }
 
@@ -41,10 +43,6 @@ namespace ECommerce.Backend.Controllers
         // GET: CollectionTmps/Create
         public ActionResult Create()
         {
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name");
-            ViewBag.DisbursedLoanId = new SelectList(db.DisbursedLoans, "DisbursedLoanId", "UserName");
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description");
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name");
             return View();
         }
 
@@ -53,19 +51,19 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(CollectionTmp collectionTmp)
+        public ActionResult Create(CollectionTmp collectionTmp)
         {
+
+            var response = MovementsHelper.NewCollection(collectionTmp, User.Identity.Name);
+            var responseUpdate = MovementsHelper.UpdateInventories(User.Identity.Name);
+
             if (ModelState.IsValid)
             {
-                db.CollectionTmps.Add(collectionTmp);
-                await db.SaveChangesAsync();
+                //db.CollectionTmps.Add(collectionTmp);
+                //await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CompanyId = new SelectList(db.Companies, "CompanyId", "Name", collectionTmp.CompanyId);
-            ViewBag.DisbursedLoanId = new SelectList(db.DisbursedLoans, "DisbursedLoanId", "UserName", collectionTmp.DisbursedLoanId);
-            ViewBag.LoanStateId = new SelectList(db.LoanStates, "LoanStateId", "Description", collectionTmp.LoanStateId);
-            ViewBag.WarehouseId = new SelectList(db.Warehouses, "WarehouseId", "Name", collectionTmp.WarehouseId);
             return View(collectionTmp);
         }
 
@@ -117,7 +115,7 @@ namespace ECommerce.Backend.Controllers
                 CompanyId = collectionTmp.CompanyId,
                 WarehouseId = collectionTmp.WarehouseId,
                 DisbursedLoanId = collectionTmp.DisbursedLoanId,
-                UserName = collectionTmp.UserName,
+                UserName = User.Identity.Name,
                 LoanStateId = collectionTmp.LoanStateId,
                 CollectionDate = collectionTmp.CollectionDate,
                 Payment = collectionTmp.Payment,

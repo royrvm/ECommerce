@@ -44,9 +44,9 @@ namespace ECommerce.Backend.Classes
             return companies.OrderBy(d => d.Name).ToList();
         }
 
-        public static List<User> GetUsers()
+        public static List<User> GetUsers(int companyId)
         {
-            var user = db.Users.ToList();
+            var user = db.Users.Where(u=>u.CompanyId==companyId).ToList();
             user.Add(new User
             {
                 UserId = 0,
@@ -66,8 +66,10 @@ namespace ECommerce.Backend.Classes
             return customers.OrderBy(c => c.FirstName).ThenBy(c=>c.LastName).ToList();
         }
 
-        public static List<MainWarehouse> GetMainWarehouses()
+        public static List<MainWarehouse> GetMainWarehouses(int companyId)
         {
+            var mainWarehouses = db.MainWarehouses.Where(c => c.CompanyId == companyId).ToList();
+
             var mainwarehouses = db.MainWarehouses.ToList();
             mainwarehouses.Add(new MainWarehouse
             {
@@ -75,6 +77,19 @@ namespace ECommerce.Backend.Classes
                 Name = "[Select a mainwarehouse...]"
             });
             return mainwarehouses.OrderBy(d => d.Name).ToList();
+        }
+
+        public static List<Warehouse> GetWarehouses(int companyId)
+        {
+            var wareHouses = db.Warehouses.Where(c => c.CompanyId == companyId).ToList();
+
+            var warehouses = db.Warehouses.ToList();
+            warehouses.Add(new Warehouse
+            {
+                WarehouseId = 0,
+                Name = "[Select a warehouse...]"
+            });
+            return warehouses.OrderBy(d => d.Name).ToList();
         }
 
         public void Dispose()
