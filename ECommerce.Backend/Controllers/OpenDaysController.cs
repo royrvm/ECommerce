@@ -59,6 +59,7 @@ namespace ECommerce.Backend.Controllers
                 CompanyId = user.CompanyId,
                 OpenDate = DateTime.Today,
                 UserName=user.UserName,
+                OnOff=true,
             };
 
             return View(view);

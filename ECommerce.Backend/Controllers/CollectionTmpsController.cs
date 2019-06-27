@@ -21,7 +21,8 @@ namespace ECommerce.Backend.Controllers
         public async Task<ActionResult> Index()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            var collectionTmps = db.CollectionTmps.Where(c=>c.CompanyId==user.CompanyId).Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
+            var wHouse = db.Warehouses.Where(wh => wh.UserId == user.UserId).FirstOrDefault();
+            var collectionTmps = db.CollectionTmps.Where(c=>c.WarehouseId==wHouse.WarehouseId).Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
             return View(await collectionTmps.ToListAsync());
         }
 
@@ -53,7 +54,6 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CollectionTmp collectionTmp)
         {
-
             var response = MovementsHelper.NewCollection(collectionTmp, User.Identity.Name);
             var responseUpdate = MovementsHelper.UpdateInventories(User.Identity.Name);
 
@@ -83,22 +83,6 @@ namespace ECommerce.Backend.Controllers
             return PartialView(collectionTmp);
         }
 
-        private CollectionTmp ToCollectionTmp(CollectionTmp view)
-        {
-            return new CollectionTmp
-            {
-                CollectionId= view.CollectionId,
-                CompanyId=view.CompanyId,
-                WarehouseId=view.WarehouseId,
-                DisbursedLoanId=view.DisbursedLoanId,
-                UserName=view.UserName,
-                LoanStateId=view.LoanStateId,
-                CollectionDate=view.CollectionDate,
-                Payment=view.Payment,
-                CurrentBalance= view.CurrentBalance  - view.Payment,
-            };
-        }
-
         // POST: CollectionTmps/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -125,7 +109,6 @@ namespace ECommerce.Backend.Controllers
 
             if (ModelState.IsValid)
             {
-                //var collection = this.ToCollectionTmp(collectionTmp);
 
                 db.Entry(view).State = EntityState.Modified;
                 await db.SaveChangesAsync();

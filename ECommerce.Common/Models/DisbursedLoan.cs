@@ -85,13 +85,13 @@ namespace ECommerce.Common.Models
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Total")]
-        public decimal Total { get { return (BorrowedCapital * (Interest / 100)) + BorrowedCapital; } set {; } }
+        public decimal Total { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Balance")]
-        public decimal Balance { get { return (BorrowedCapital * (Interest / 100)) + BorrowedCapital; } set {; } }
+        public decimal Balance { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
