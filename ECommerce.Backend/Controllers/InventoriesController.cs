@@ -12,6 +12,7 @@ using ECommerce.Common.Models;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "Salesman")]
     public class InventoriesController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -19,7 +20,8 @@ namespace ECommerce.Backend.Controllers
         // GET: Inventories
         public async Task<ActionResult> Index()
         {
-            var inventories = db.Inventories.Include(i => i.Warehouse);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var inventories = db.Inventories.Where(inv=>inv.CompanyId==user.CompanyId).Include(i => i.Warehouse);
             return View(await inventories.ToListAsync());
         }
 

@@ -13,6 +13,7 @@ using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "User")]
     public class DisbursedLoansController : Controller
     {
         private LocalDataContext db = new LocalDataContext();

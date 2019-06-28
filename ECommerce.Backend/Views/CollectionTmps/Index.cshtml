@@ -7,27 +7,12 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Save Changes", "Create",new { },new {@class="btn btn-primary" })
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Company.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisbursedLoan.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LoanState.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Warehouse.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CollectionDate)
+            @Html.DisplayNameFor(model => model.DisbursedLoan.Customer.FullName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Payment)
@@ -42,22 +27,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Company.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisbursedLoan.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LoanState.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Warehouse.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CollectionDate)
+                @Html.DisplayFor(modelItem => item.DisbursedLoan.Customer.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Payment)
@@ -94,7 +64,7 @@
                 e.preventDefault();
                 var $link = $(this);
                 var title = $link.text();
-                $('#Edit .modal-title').html(title);
+                //$('#Edith .modal-title').html(title);
                 var url = $(this).attr('href');
                 if (url.indexOf('#') == 0) {
                     $('#Edit').modal('show');

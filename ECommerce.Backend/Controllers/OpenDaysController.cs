@@ -13,6 +13,8 @@ using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "User")]
+
     public class OpenDaysController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -20,7 +22,8 @@ namespace ECommerce.Backend.Controllers
         // GET: OpenDays
         public async Task<ActionResult> Index()
         {
-            var openDays = db.OpenDays.Include(o => o.Company);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var openDays = db.OpenDays.Where(oD=>oD.CompanyId==user.CompanyId).Include(o => o.Company);
             return View(await openDays.ToListAsync());
 
             //var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();

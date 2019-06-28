@@ -17,7 +17,8 @@ namespace ECommerce.Backend.Controllers
         private LocalDataContext db = new LocalDataContext();
         public async Task<ActionResult> Index()
         {
-            var disbursedLoans = db.Orders.Where(state => state.StateId == 1).Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var disbursedLoans = db.Orders.Where(state => state.StateId == 1).Where(dloans=>dloans.CompanyId==user.CompanyId).Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
             return View(await disbursedLoans.ToListAsync());
         }
 

@@ -12,6 +12,7 @@ using ECommerce.Common.Models;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class LoanStatesController : Controller
     {
         private LocalDataContext db = new LocalDataContext();

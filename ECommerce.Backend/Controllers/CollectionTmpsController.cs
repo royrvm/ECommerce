@@ -13,6 +13,8 @@ using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "Salesman")]
+
     public class CollectionTmpsController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -22,7 +24,7 @@ namespace ECommerce.Backend.Controllers
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             var wHouse = db.Warehouses.Where(wh => wh.UserId == user.UserId).FirstOrDefault();
-            var collectionTmps = db.CollectionTmps.Where(c=>c.WarehouseId==wHouse.WarehouseId).Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
+            var collectionTmps = db.CollectionTmps.Where(c=>c.WarehouseId==wHouse.WarehouseId).OrderBy(orColl=>orColl.Payment>0).Include(c => c.Company).Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
             return View(await collectionTmps.ToListAsync());
         }
 

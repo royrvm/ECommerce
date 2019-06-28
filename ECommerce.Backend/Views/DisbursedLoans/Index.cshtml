@@ -6,19 +6,10 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Customer.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.State.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EndDate)
@@ -33,10 +24,7 @@
             @Html.DisplayNameFor(model => model.Total)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DailyPayment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OperatingExpenses)
+            @Html.DisplayNameFor(model => model.Balance)
         </th>
         <th></th>
     </tr>
@@ -46,12 +34,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Customer.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.State.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EndDate)
@@ -66,15 +48,12 @@
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DailyPayment)
+                @Html.DisplayFor(modelItem => item.Balance)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OperatingExpenses)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.DisbursedLoanId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.DisbursedLoanId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.DisbursedLoanId })
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.DisbursedLoanId }) |*@
+                @Html.ActionLink("Details", "Details", new { id = item.DisbursedLoanId })
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.DisbursedLoanId })*@
             </td>
         </tr>
     }

@@ -13,6 +13,7 @@ using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
+    [Authorize(Roles = "Salesman")]
     public class OrdersController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
@@ -22,7 +23,7 @@ namespace ECommerce.Backend.Controllers
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             var warehouse = db.Warehouses.Where(w => w.UserId == user.UserId).FirstOrDefault();
-            var orders = db.Orders.Where(o => o.WarehouseId == warehouse.WarehouseId).Include(o => o.Customer).Include(o => o.State).Include(o => o.Warehouse);
+            var orders = db.Orders.Where(o => o.WarehouseId == warehouse.WarehouseId).Where(est=>est.StateId == 1).Include(o => o.Customer).Include(o => o.State).Include(o => o.Warehouse);
 
             return View(await orders.ToListAsync());
         }
