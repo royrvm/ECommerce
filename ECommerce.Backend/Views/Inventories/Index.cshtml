@@ -6,14 +6,9 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Warehouse.Name)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
         </th>
@@ -29,35 +24,39 @@
         <th>
             @Html.DisplayNameFor(model => model.Renewedcredit)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalBalance)
+        </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Warehouse.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Collection)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pettycash)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Administrativeexpense)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Renewedcredit)
-        </td>
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id=item.InventoryId }) |*@
-            @Html.ActionLink("Details", "Details", new { id=item.InventoryId })
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.InventoryId })*@
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Collection)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pettycash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Administrativeexpense)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Renewedcredit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalBalance)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.InventoryId }) |*@
+                @Html.ActionLink("Details", "Details", new { id = item.InventoryId })
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.InventoryId })*@
+            </td>
+        </tr>
+    }
 
 </table>

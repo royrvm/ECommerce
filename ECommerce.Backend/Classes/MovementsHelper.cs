@@ -94,7 +94,7 @@ namespace ECommerce.Backend.Classes
                     var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
                     var mainWareHouses = db.MainWarehouses.Where(w => w.CompanyId == view.CompanyId).ToList();
                     var wareHouses = db.Warehouses.Where(w => w.CompanyId == view.CompanyId).ToList();
-                    var disbursedLoans = db.DisbursedLoans.Where(wH => wH.CompanyId == view.CompanyId).ToList();
+                    var disbursedLoans = db.DisbursedLoans.Where(wH => wH.CompanyId == view.CompanyId).Where(cA=>cA.StateId==2).ToList();
 
                     var openDay = new OpenDay
                     {
@@ -271,26 +271,33 @@ namespace ECommerce.Backend.Classes
                     foreach (Collection detailcTmp in collection)
                     {
                         var disbursedloans = db.DisbursedLoans.Where(l => l.DisbursedLoanId == detailcTmp.DisbursedLoanId).FirstOrDefault();
-                        
-                            disbursedloans.DisbursedLoanId = detailcTmp.DisbursedLoanId;
-                            //disbursedloans.CustomerId = detailcTmp.CustomerId;
-                            //disbursedloans.WarehouseId = detailcTmp.WarehouseId;
-                            //disbursedloans.OrderId = detailcTmp.OrderId;
-                            //disbursedloans.StateId = DBHelper.GetState("Disbursed", db);
-                            //disbursedloans.TypeLoanId = DBHelper.GetTypeLoan("Renewed", db);
-                            //disbursedloans.LoanStateId = DBHelper.GetLoanState("Common", db);
-                            //disbursedloans.StartDate = detailcTmp.StartDate;
-                            //disbursedloans.EndDate = detailcTmp.EndDate;
-                            //disbursedloans.Period = detailcTmp.Period;
-                            //disbursedloans.UserName = detailcTmp.UserName;
-                            //disbursedloans.Remarks = detailcTmp.Remarks;
-                            //disbursedloans.BorrowedCapital = detailcTmp.BorrowedCapital;
-                            //disbursedloans.Interest = detailcTmp.Interest;
-                            //disbursedloans.Total = detailcTmp.Total;
-                            disbursedloans.Balance = detailcTmp.CurrentBalance;
-                            //disbursedloans.DailyPayment = detailcTmp.DailyPayment;
-                            //disbursedloans.OperatingExpenses = detailcTmp.OperatingExpenses;
-                        
+
+                        disbursedloans.DisbursedLoanId = detailcTmp.DisbursedLoanId;
+                        //disbursedloans.CustomerId = detailcTmp.CustomerId;
+                        //disbursedloans.WarehouseId = detailcTmp.WarehouseId;
+                        //disbursedloans.OrderId = detailcTmp.OrderId;
+                        if (detailcTmp.CurrentBalance == 0)
+                        {
+                            disbursedloans.StateId = DBHelper.GetState("Cancelled", db);
+                        }
+                        else
+                        {
+                            disbursedloans.StateId = DBHelper.GetState("Disbursed", db);
+                        }
+                        //disbursedloans.TypeLoanId = DBHelper.GetTypeLoan("Renewed", db);
+                        //disbursedloans.LoanStateId = DBHelper.GetLoanState("Common", db);
+                        //disbursedloans.StartDate = detailcTmp.StartDate;
+                        //disbursedloans.EndDate = detailcTmp.EndDate;
+                        //disbursedloans.Period = detailcTmp.Period;
+                        //disbursedloans.UserName = detailcTmp.UserName;
+                        //disbursedloans.Remarks = detailcTmp.Remarks;
+                        //disbursedloans.BorrowedCapital = detailcTmp.BorrowedCapital;
+                        //disbursedloans.Interest = detailcTmp.Interest;
+                        //disbursedloans.Total = detailcTmp.Total;
+                        disbursedloans.Balance = detailcTmp.CurrentBalance;
+                        //disbursedloans.DailyPayment = detailcTmp.DailyPayment;
+                        //disbursedloans.OperatingExpenses = detailcTmp.OperatingExpenses;
+
                         db.Entry(detailcTmp).State = EntityState.Modified;
                     }
                     db.SaveChanges();
