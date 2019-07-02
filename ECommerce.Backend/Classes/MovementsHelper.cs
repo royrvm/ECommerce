@@ -94,7 +94,12 @@ namespace ECommerce.Backend.Classes
                     var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
                     var mainWareHouses = db.MainWarehouses.Where(w => w.CompanyId == view.CompanyId).ToList();
                     var wareHouses = db.Warehouses.Where(w => w.CompanyId == view.CompanyId).ToList();
+
                     var disbursedLoans = db.DisbursedLoans.Where(wH => wH.CompanyId == view.CompanyId).Where(cA=>cA.StateId==2).ToList();
+
+                    var lastOpenDay = db.OpenDays.Where(od => od.CompanyId == view.CompanyId).Where(of => of.OnOff == true).FirstOrDefault();
+                    lastOpenDay.OnOff = false;
+                    db.Entry(lastOpenDay).State = EntityState.Modified;
 
                     var openDay = new OpenDay
                     {
@@ -302,6 +307,12 @@ namespace ECommerce.Backend.Classes
                     }
                     db.SaveChanges();
 
+                    var totaldisbursedloans = db.DisbursedLoans.Where(l => l.WarehouseId == wareHouse.WarehouseId)
+                        .Where(l => l.StateId == 2).ToList();
+                    var tdlxday = db.DisbursedLoans.Where(l => l.WarehouseId == wareHouse.WarehouseId)
+                        .Where(date => date.StartDate.Year.Equals(openDay.OpenDate.Year))
+                        .Where(date => date.StartDate.Month.Equals(openDay.OpenDate.Month))
+                        .Where(date => date.StartDate.Day.Equals(openDay.OpenDate.Day)).ToList();
 
                     var inventory = db.Inventories.Where(l => l.InventoryId == inventories.InventoryId).FirstOrDefault();
 
@@ -310,14 +321,14 @@ namespace ECommerce.Backend.Classes
                     inventory.CompanyId = user.CompanyId;
                     inventory.Date = inventories.Date;
                     inventory.Collection = collection.Sum(col => Convert.ToDouble(col.Payment));
-                    inventory.Collection = inventories.Collection;
                     inventory.Pettycash = inventories.Pettycash;
-                    inventory.Administrativeexpense = inventories.Administrativeexpense;
-                    inventory.Subtotal = inventories.Subtotal;
-                    inventory.Renewedcredit = inventories.Subtotal;
+                    inventory.Administrativeexpense = tdlxday.Sum(col => Convert.ToDouble(col.OperatingExpenses));
+                    inventory.Subtotal = Convert.ToDouble(inventory.Collection) + Convert.ToDouble(inventory.Pettycash) + Convert.ToDouble(inventory.Administrativeexpense);
+                    inventory.Renewedcredit = tdlxday.Sum(col => Convert.ToDouble(col.BorrowedCapital)); ;
                     inventory.Total = inventories.Total;
-                    inventory.InitialLoan = inventories.InitialLoan;
-                    inventory.TotalLoan = inventories.TotalLoan;
+
+                    inventory.InitialLoan = totaldisbursedloans.Sum(col => Convert.ToDouble(col.BorrowedCapital));
+                    inventory.TotalLoan = totaldisbursedloans.Sum(col => Convert.ToDouble(col.Total));
                     inventory.TotalBalance = collection.Sum(col => Convert.ToDouble(col.CurrentBalance));
 
                     db.Entry(inventory).State = EntityState.Modified;

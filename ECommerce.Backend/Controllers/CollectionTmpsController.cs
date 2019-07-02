@@ -25,8 +25,7 @@ namespace ECommerce.Backend.Controllers
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             var wHouse = db.Warehouses.Where(wh => wh.UserId == user.UserId).FirstOrDefault();
             var collectionTmps = db.CollectionTmps.Where(c=>c.WarehouseId==wHouse.WarehouseId)
-                .OrderBy(oName => oName.DisbursedLoan.Customer.FirstName)
-                .OrderBy(orColl=>orColl.Payment).Include(c => c.Company)
+                .OrderBy(oName => oName.DisbursedLoan.Customer.FirstName).Include(c => c.Company)
                 .Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
             return View(await collectionTmps.ToListAsync());
         }

@@ -13,7 +13,7 @@ using ECommerce.Backend.Classes;
 
 namespace ECommerce.Backend.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,User")]
 
     public class MainWarehousesController : Controller
     {
@@ -22,7 +22,8 @@ namespace ECommerce.Backend.Controllers
         // GET: MainWarehouses
         public async Task<ActionResult> Index()
         {
-            var mainWarehouses = db.MainWarehouses.Include(m => m.Company).Include(m => m.Department).Include(m => m.District);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var mainWarehouses = db.MainWarehouses.Where(mwh=>mwh.CompanyId==user.CompanyId).Include(m => m.Company).Include(m => m.Department).Include(m => m.District);
             return View(await mainWarehouses.ToListAsync());
         }
 

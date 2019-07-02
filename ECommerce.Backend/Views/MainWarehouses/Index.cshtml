@@ -7,7 +7,7 @@
     <h2>MainWarehouse</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create",new { },new { @class="btn btn-primary"})
 </p>
 <table class="table">
     <tr>
@@ -53,9 +53,9 @@
             @Html.DisplayFor(modelItem => item.Address)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MainWarehouseId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MainWarehouseId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MainWarehouseId })
+            @Html.ActionLink("Edit", "Edit", new { id=item.MainWarehouseId },new { @class="btn btn-warning"})
+            @Html.ActionLink("Details", "Details", new { id=item.MainWarehouseId },new { @class="btn btn-info"})
+            @Html.ActionLink("Delete", "Delete", new { id=item.MainWarehouseId },new { @class="btn btn-danger"})
         </td>
     </tr>
 }

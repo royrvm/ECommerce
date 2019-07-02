@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Save Changes", "Create",new { },new {@class="btn btn-primary" })
+    @Html.ActionLink("Save Changes", "Create", new { }, new { @class = "btn btn-primary" })
 </p>
 <table class="table">
     <tr>
@@ -25,21 +25,42 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisbursedLoan.Customer.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Payment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrentBalance)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", "CollectionTmps", new {id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
-                @Html.ActionLink("Details", "Details", new { id = item.CollectionId }, new { @class = "btn btn-warning" })
-            </td>
-        </tr>
+        if (item.Payment == 0)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisbursedLoan.Customer.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentBalance)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
+                    @Html.ActionLink("Details", "Details", new { id = item.CollectionId }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
+        else
+        {
+            <tr bgcolor="#C0C0C0">
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisbursedLoan.Customer.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Payment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CurrentBalance)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
+                    @Html.ActionLink("Details", "Details", new { id = item.CollectionId }, new { @class = "btn btn-warning" })
+                </td>
+            </tr>
+        }
     }
 
 </table>
