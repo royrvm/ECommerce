@@ -1,82 +1,53 @@
 ﻿@model ECommerce.Common.Models.CollectionTmp
 
-@{
-    ViewBag.Title = "Details";
-}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-<h2>Details</h2>
 
-<div>
-    <h4>CollectionTmp</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Company.Name)
-        </dt>
+<h4>@Html.DisplayFor(model => model.DisbursedLoan.Customer.FullName)</h4>
 
-        <dd>
-            @Html.DisplayFor(model => model.Company.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DisbursedLoan.UserName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DisbursedLoan.UserName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LoanState.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LoanState.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Warehouse.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Warehouse.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-
-        <dt>
+<table class="table">
+    <tr>
+        <th>
             @Html.DisplayNameFor(model => model.CollectionDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CollectionDate)
-        </dd>
-
-        <dt>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Payment)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Payment)
-        </dd>
-
-        <dt>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.CurrentBalance)
-        </dt>
+        </th>
+        <th></th>
+    </tr>
 
-        <dd>
+    @foreach (var item in ViewBag.Details)
+    {
+        <tr>
+            <td>
+                @item.CollectionDate.ToString("yyyy-MM-dd")
+            </td>
+            <td>
+                @item.Payment.ToString("C1")
+            </td>
+            <td>
+                @item.CurrentBalance.ToString("C1")
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.CollectionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Payment)
+        </td>
+        <td>
             @Html.DisplayFor(model => model.CurrentBalance)
-        </dd>
+        </td>
+    </tr>
+</table>
 
-    </dl>
-</div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.CollectionId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index",new { },new { @class="btn btn-success"})
 </p>

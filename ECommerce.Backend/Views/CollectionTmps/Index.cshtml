@@ -4,11 +4,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2></h2>
 
 <p>
     @Html.ActionLink("Save Changes", "Create", new { }, new { @class = "btn btn-primary" })
 </p>
+<h3>C.Count: @ViewBag.CountPayments/@ViewBag.Count    Collection: @ViewBag.Sum</h3>
 <table class="table">
     <tr>
         <th>
@@ -38,8 +39,8 @@
                     @Html.DisplayFor(modelItem => item.CurrentBalance)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
-                    @Html.ActionLink("Details", "Details", new { id = item.CollectionId }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("--Edit--", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
+                    @Html.ActionLink("Details", "Details", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-warning" })
                 </td>
             </tr>
         }
@@ -56,8 +57,8 @@
                     @Html.DisplayFor(modelItem => item.CurrentBalance)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
-                    @Html.ActionLink("Details", "Details", new { id = item.CollectionId }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("--Edit--", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
+                    @Html.ActionLink("Details", "Details", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-warning" })
                 </td>
             </tr>
         }
@@ -66,6 +67,18 @@
 </table>
 
 <div class="modal fade" id="Edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title"></h2>
+            </div>
+            <div class="modal-body"><div class="te">Please wait...</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,6 +107,28 @@
                     $.get(url, function (data) {
                         $('#Edit .te').html(data);
                         $('#Edit').modal();
+                    }).success(function () { $('input:text:visible:first').focus(); });
+
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("body").on("click", "a.dialog-window", null, function (e) {
+                e.preventDefault();
+                var $link = $(this);
+                var title = $link.text();
+                //$('#Edith .modal-title').html(title);
+                var url = $(this).attr('href');
+                if (url.indexOf('#') == 0) {
+                    $('#Details').modal('show');
+                }
+                else {
+                    $.get(url, function (data) {
+                        $('#Details .te').html(data);
+                        $('#Details').modal();
                     }).success(function () { $('input:text:visible:first').focus(); });
 
                 }

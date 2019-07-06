@@ -27,8 +27,32 @@ namespace ECommerce.Backend.Controllers
             var collectionTmps = db.CollectionTmps.Where(c=>c.WarehouseId==wHouse.WarehouseId)
                 .OrderBy(oName => oName.DisbursedLoan.Customer.FirstName).Include(c => c.Company)
                 .Include(c => c.DisbursedLoan).Include(c => c.LoanState).Include(c => c.Warehouse).Include(c => c.DisbursedLoan.Customer);
+
+            if (collectionTmps.Count() != 0)
+            {
+                var sumcoll = collectionTmps.Sum(sum => sum.Payment);
+                ViewBag.Sum = sumcoll;
+            }
+            var countTot = collectionTmps.Count();
+            var countTotPayments = collectionTmps.Where(ct=>ct.Payment!=0).Count();
+            
+            ViewBag.Count = countTot;
+            ViewBag.CountPayments = countTotPayments;
+
             return View(await collectionTmps.ToListAsync());
         }
+
+        //TODO esto esta pendiente
+        public async Task<ActionResult> DetailsCollection(int? id)
+        {
+            CollectionTmp collectionTmp = await db.CollectionTmps.FindAsync(id);
+            var detail = db.Collections.Where(d => d.DisbursedLoanId == collectionTmp.DisbursedLoanId).ToList();
+            ViewBag.Details = detail;
+            return View();
+        }
+
+
+
 
         // GET: CollectionTmps/Details/5
         public async Task<ActionResult> Details(int? id)
@@ -38,11 +62,13 @@ namespace ECommerce.Backend.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CollectionTmp collectionTmp = await db.CollectionTmps.FindAsync(id);
+            var detail = db.Collections.Where(d => d.DisbursedLoanId == collectionTmp.DisbursedLoanId).ToList();
+            ViewBag.Details = detail;
             if (collectionTmp == null)
             {
                 return HttpNotFound();
             }
-            return View(collectionTmp);
+            return PartialView(collectionTmp);
         }
 
         // GET: CollectionTmps/Create

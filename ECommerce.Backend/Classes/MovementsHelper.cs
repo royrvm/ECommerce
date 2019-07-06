@@ -103,7 +103,7 @@ namespace ECommerce.Backend.Classes
 
                     var openDay = new OpenDay
                     {
-                        OpenDate=DateTime.Now,
+                        OpenDate=DateTime.Today,
                         CompanyId=user.CompanyId,
                         UserName=user.UserName,
                         OnOff=true,

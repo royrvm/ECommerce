@@ -92,6 +92,20 @@ namespace ECommerce.Backend.Controllers
             };
         }
 
+        private Company ToCompanyEdit(CompanyView view, string pic)
+        {
+            return new Company
+            {
+                CompanyId=view.CompanyId,
+                Name = view.Name,
+                Phone = view.Phone,
+                Address = view.Address,
+                Logo = pic,
+                DepartmentId = view.DepartmentId,
+                DistrictId = view.DistrictId,
+            };
+        }
+
         // GET: Companies/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
@@ -106,7 +120,23 @@ namespace ECommerce.Backend.Controllers
             }
             ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", company.DepartmentId);
             ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", company.DistrictId);
+
+            var view = this.ToView(company);
             return View(company);
+        }
+
+        private CompanyView ToView(Company company)
+        {
+            return new CompanyView
+            {
+                CompanyId = company.CompanyId,
+                Name = company.Name,
+                Phone = company.Phone,
+                Address = company.Address,
+                Logo = company.Logo,
+                DepartmentId = company.DepartmentId,
+                DistrictId = company.DistrictId,
+            };
         }
 
         // POST: Companies/Edit/5
@@ -114,17 +144,30 @@ namespace ECommerce.Backend.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit( Company company)
+        public async Task<ActionResult> Edit(CompanyView view)
         {
             if (ModelState.IsValid)
             {
+                var pic = view.Logo;
+                var folder = "~/Content/Companies";
+
+                if (view.LogoFile != null)
+                {
+                    pic = FilesHelper.UploadPhoto(view.LogoFile, folder);
+                    pic = string.Format("{0}/{1}", folder, pic);
+                }
+
+                var company = this.ToCompanyEdit(view, pic);
+
+                this.db.Entry(company).State = EntityState.Modified;
+
                 this.db.Entry(company).State = EntityState.Modified;
                 await this.db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", company.DepartmentId);
-            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", company.DistrictId);
-            return View(company);
+            ViewBag.DepartmentId = new SelectList(CombosHelper.GetDepartments(), "DepartmentId", "Name", view.DepartmentId);
+            ViewBag.DistrictId = new SelectList(CombosHelper.GetDistricts(), "DistrictId", "Name", view.DistrictId);
+            return View(view);
         }
 
         // GET: Companies/Delete/5
