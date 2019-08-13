@@ -23,7 +23,7 @@ namespace ECommerce.Backend.Controllers
         public async Task<ActionResult> Index()
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            var openDays = db.OpenDays.Where(oD=>oD.CompanyId==user.CompanyId).Include(o => o.Company);
+            var openDays = db.OpenDays.Where(oD=>oD.CompanyId==user.CompanyId).Include(o => o.Company).OrderByDescending(oDat=>oDat.OpenDate);
             return View(await openDays.ToListAsync());
 
             //var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();

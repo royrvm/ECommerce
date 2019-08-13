@@ -187,7 +187,7 @@ namespace ECommerce.Backend.Classes
 
         }
 
-        public static Response NewCollection(CollectionTmp view, string userName)
+        public static Response NewCollection(string userName)
         {
             using (var transacction = db.Database.BeginTransaction())
             {

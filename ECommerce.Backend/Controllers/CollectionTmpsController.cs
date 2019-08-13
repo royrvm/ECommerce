@@ -84,7 +84,7 @@ namespace ECommerce.Backend.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CollectionTmp collectionTmp)
         {
-            var response = MovementsHelper.NewCollection(collectionTmp, User.Identity.Name);
+            var response = MovementsHelper.NewCollection(User.Identity.Name);
             var responseUpdate = MovementsHelper.UpdateInventories(User.Identity.Name);
 
             if (ModelState.IsValid)

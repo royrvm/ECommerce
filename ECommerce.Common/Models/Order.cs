@@ -33,6 +33,7 @@ namespace ECommerce.Common.Models
         public int StateId { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
@@ -58,36 +59,42 @@ namespace ECommerce.Common.Models
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Borrowed Capital")]
+        [DataType(DataType.PhoneNumber)]
         public decimal BorrowedCapital { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:N1}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Interest %")]
+        [DataType(DataType.PhoneNumber)]
         public decimal Interest { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Total")]
+        [DataType(DataType.PhoneNumber)]
         public decimal Total { get { return (BorrowedCapital * (Interest/100))+BorrowedCapital; } set {; } }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Balance")]
+        [DataType(DataType.PhoneNumber)]
         public decimal Balance { get { return (BorrowedCapital * (Interest / 100)) + BorrowedCapital; } set {; } }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "Daily Payment")]
+        [DataType(DataType.PhoneNumber)]
         public double DailyPayment { get; set; }
 
         [Required(ErrorMessage = "The field {0} is required")]
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         [Range(0, double.MaxValue, ErrorMessage = "You must enter values in {0} between {1} and {2}")]
         [Display(Name = "O. Expenses")]
+        [DataType(DataType.PhoneNumber)]
         public double OperatingExpenses { get; set; }
 
         public virtual Customer Customer { get; set; }

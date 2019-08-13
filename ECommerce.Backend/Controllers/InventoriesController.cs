@@ -22,7 +22,7 @@ namespace ECommerce.Backend.Controllers
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
             var warehouse = db.Warehouses.Where(wh => wh.UserId == user.UserId).FirstOrDefault();
-            var inventories = db.Inventories.Where(inv=>inv.CompanyId==user.CompanyId).Where(i=>i.WarehouseId==warehouse.WarehouseId).Include(i => i.Warehouse);
+            var inventories = db.Inventories.Where(inv=>inv.CompanyId==user.CompanyId).Where(i=>i.WarehouseId==warehouse.WarehouseId).Include(i => i.Warehouse).OrderByDescending(oFec=>oFec.Date);
             return View(await inventories.ToListAsync());
         }
 
