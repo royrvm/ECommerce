@@ -112,9 +112,6 @@ namespace ECommerce.Backend.Controllers
         {
             var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
 
-            var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
-            .Select(x => new { x.Key, x.Value.Errors })
-            .ToArray();
 
             if (ModelState.IsValid)
             {

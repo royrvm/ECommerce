@@ -7,7 +7,7 @@
 <h2></h2>
 
 <p>
-    @Html.ActionLink("Save Changes", "Create", new { }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Guardar cambios", "Create", new { }, new { @class = "btn btn-primary" })
 </p>
 <h3>C.C.: @ViewBag.CountPayments/@ViewBag.Count    C.P.: @ViewBag.Sum</h3>
 <table class="table">
@@ -39,8 +39,8 @@
                     @Html.DisplayFor(modelItem => item.CurrentBalance)
                 </td>
                 <td>
-                    @Html.ActionLink("--Edit--", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
-                    @Html.ActionLink("Details", "Details", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-warning" })
+                    @Html.ActionLink("Editar", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
+                    @Html.ActionLink("Detalle", "Details", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-warning" })
                 </td>
             </tr>
         }
@@ -57,8 +57,8 @@
                     @Html.DisplayFor(modelItem => item.CurrentBalance)
                 </td>
                 <td>
-                    @Html.ActionLink("--Edit--", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
-                    @Html.ActionLink("Details", "Details", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-warning" })
+                    @Html.ActionLink("Editar", "Edit", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-info" })
+                    @Html.ActionLink("Detalle", "Details", "CollectionTmps", new { id = item.CollectionId }, new { @class = "dialog-window btn btn-warning" })
                 </td>
             </tr>
         }

@@ -87,6 +87,10 @@ namespace ECommerce.Backend.Controllers
             var response = MovementsHelper.NewCollection(User.Identity.Name);
             var responseUpdate = MovementsHelper.UpdateInventories(User.Identity.Name);
 
+            // var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+            //.Select(x => new { x.Key, x.Value.Errors })
+            //.ToArray();
+
             if (ModelState.IsValid)
             {
                 //db.CollectionTmps.Add(collectionTmp);
@@ -94,7 +98,7 @@ namespace ECommerce.Backend.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(collectionTmp);
+            return RedirectToAction("Index");
         }
 
         // GET: CollectionTmps/Edit/5

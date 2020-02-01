@@ -1,17 +1,16 @@
 ﻿@model ECommerce.Common.Models.CollectionTmp
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Guardar descargo";
 }
 
-<h2>Create</h2>
+    <h2>Guardar descargo</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>CollectionTmp</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.CompanyId)
@@ -25,8 +24,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-success" />
-                @Html.ActionLink("Back to List", "Index", new { }, new { @class = "BTN BTN-PRIMARY" })
+                <input type="submit" value="Guardar descargo" class="btn btn-success" />
+                @Html.ActionLink("Regresar", "Index", new { }, new { @class = "BTN BTN-PRIMARY" })
             </div>
         </div>
     </div>

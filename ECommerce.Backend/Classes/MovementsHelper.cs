@@ -92,14 +92,14 @@ namespace ECommerce.Backend.Classes
                 try
                 {
                     var user = db.Users.Where(u => u.UserName == userName).FirstOrDefault();
-                    var mainWareHouses = db.MainWarehouses.Where(w => w.CompanyId == view.CompanyId).ToList();
+                    var mainWareHouses = db.MainWarehouses.Where(w => w.CompanyId == user.CompanyId).ToList();
                     var wareHouses = db.Warehouses.Where(w => w.CompanyId == view.CompanyId).ToList();
 
                     var disbursedLoans = db.DisbursedLoans.Where(wH => wH.CompanyId == view.CompanyId).Where(cA=>cA.StateId==2).ToList();
 
-                    var lastOpenDay = db.OpenDays.Where(od => od.CompanyId == view.CompanyId).Where(of => of.OnOff == true).FirstOrDefault();
-                    lastOpenDay.OnOff = false;
-                    db.Entry(lastOpenDay).State = EntityState.Modified;
+                    //var lastOpenDay = db.OpenDays.Where(od => od.CompanyId == view.CompanyId).Where(of => of.OnOff == true).FirstOrDefault();
+                    //lastOpenDay.OnOff = false;
+                    //db.Entry(lastOpenDay).State = EntityState.Modified;
 
                     var openDay = new OpenDay
                     {
@@ -349,8 +349,6 @@ namespace ECommerce.Backend.Classes
                     mainInventory.WareHouseTotalBalance = mainInventories.WareHouseTotalBalance;
 
                     db.Entry(mainInventory).State = EntityState.Modified;
-
-
 
                     db.SaveChanges();
 

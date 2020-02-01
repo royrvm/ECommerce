@@ -21,7 +21,11 @@ namespace ECommerce.Backend.Controllers
         // GET: DisbursedLoans
         public async Task<ActionResult> Index()
         {
-            var disbursedLoans = db.DisbursedLoans.Where(state=>state.StateId==2).Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
+            var user = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+
+            var openDays = db.OpenDays.Where(oD => oD.CompanyId == user.CompanyId).Include(o => o.Company).OrderByDescending(oDat => oDat.OpenDate);
+
+            var disbursedLoans = db.DisbursedLoans.Where(dL => dL.CompanyId == user.CompanyId).Where(state=>state.StateId==2).Include(d => d.Company).Include(d => d.Customer).Include(d => d.State).Include(d => d.Warehouse);
             return View(await disbursedLoans.ToListAsync());
         }
 
